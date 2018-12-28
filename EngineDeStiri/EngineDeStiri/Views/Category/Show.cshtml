@@ -1,0 +1,19 @@
+﻿@model EngineDeStiri.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Show category";
+}
+<h1>@ViewBag.Category.Name</h1>
+<br />
+<!-- SHOW NEWS FROM THIS CATEGORY !!!!!!!!!!!!!!!!!!! -->
+<a href="/Category/Edit/@ViewBag.Category.CategoryId">Edit</a>
+
+<form method="post" action="/Category/Delete/@ViewBag.Category.CategoryId">
+    @Html.HttpMethodOverride(HttpVerbs.Delete)
+    <button type="submit">Delete</button>
+</form>
+<hr />
+<a href="/Category/Index">All Categories</a>
+<br />
+<a href="/Category/New">New</a>
+<br />

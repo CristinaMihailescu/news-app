@@ -1,0 +1,23 @@
+﻿@model EngineDeStiri.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "New";
+}
+<h2>Creare article</h2>
+
+<form method="post" action="/Article/New">
+    <label>Title</label>
+    <br />
+    <input type="text" name="Title" />
+    <br /><br />
+    <!-- MODIFICA AICI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+    <label>Thumbnail</label>
+    <br />
+    <input type="text" name="Thumbnail" />
+    <br /><br />
+    <label>Content</label>
+    <br />
+    <input type="text" name="Content" />
+    <br />
+    <button type="submit">Add</button>
+</form>

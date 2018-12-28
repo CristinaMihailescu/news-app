@@ -1,0 +1,16 @@
+﻿@model EngineDeStiri.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Edit";
+}
+<h2>Edit</h2>
+<form method="post" action="/Category/Edit/@ViewBag.Category.CategoryId">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <label>Name</label>
+    <br />
+    <input type="text" name="Name" value="@ViewBag.Category.Name" />
+    <br /><br />
+    <!-- ADD AND REMOVE NEWS FROM THIS CATEGORY !!!!!!!!!!!!!!! -->
+    <br />
+    <button type="submit">Modify</button>
+</form>

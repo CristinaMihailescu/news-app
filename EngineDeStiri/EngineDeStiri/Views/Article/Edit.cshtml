@@ -1,0 +1,32 @@
+﻿@model EngineDeStiri.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Edit";
+}
+<h2>Edit</h2>
+<form method="post" action="/Article/Edit/@ViewBag.Article.ArticleId">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <label>Title</label>
+    <br />
+    <input type="text" name="Title" value="@ViewBag.Article.Title" />
+    <br /><br />
+    <label>Date</label>
+    <br />
+    <input type="text" name="Date" value="@ViewBag.Article.Date" />
+    <br /><br />
+    <!-- MODIFICA AICI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+    <label>Author</label>
+    <br />
+    <input type="text" name="Author" value="@ViewBag.Article.Author" />
+    <br /> <br />
+    <label>Thumbnail</label>
+    <br />
+    <!-- MODIFICA AICI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+    <input type="text" name="Thumbnail" value="@ViewBag.Article.Thumbnail" />
+    <br /><br />
+    <label>Content</label>
+    <br />
+    <input type="text" name="Content" value="@ViewBag.Article.Content" />
+    <br />
+    <button type="submit">Modify</button>
+</form>

@@ -1,0 +1,14 @@
+﻿@model EngineDeStiri.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "New";
+}
+<h2>Creare category</h2>
+
+<form method="post" action="/Category/New">
+    <label>Name</label>
+    <br />
+    <input type="text" name="Name" />
+    <br /><br />
+    <button type="submit">Add</button>
+</form>

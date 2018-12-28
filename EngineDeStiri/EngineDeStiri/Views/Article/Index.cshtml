@@ -1,0 +1,20 @@
+﻿@model EngineDeStiri.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "All articles";
+}
+<h2>@ViewBag.Title</h2>
+<a href="/Article/New">New Article</a>
+<br />
+@foreach (var article in ViewBag.Articles)
+{
+    <p>@article.Title</p>
+    <p>@article.Date</p>
+    //<p>@article.author.Username</p> !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    <p>@article.Thumbnail</p>
+    <a href="/Article/Show/@article.ArticleId">View More</a>
+    <br />
+    <hr />
+    <br />
+}
+<br />

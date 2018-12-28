@@ -1,0 +1,17 @@
+﻿@model EngineDeStiri.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "All categories";
+}
+<h2>@ViewBag.Title</h2>
+<!-- <a href="/Article/New">New Article</a> -->
+<br />
+@foreach (var category in ViewBag.Categories)
+{
+    <p>@category.Name</p>
+    <a href="/Category/Show/@category.CategoryId">View More</a>
+    <br />
+    <hr />
+    <br />
+}
+<br />
