@@ -1,6 +1,7 @@
 ﻿using EngineDeStiri.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,10 +13,22 @@ namespace EngineDeStiri.Controllers
         private ArticleDBContext db = new ArticleDBContext();
         public ActionResult Index()
         {
+            System.Diagnostics.Debug.WriteLine("HELLO!!!!!!!!!!!!!!!!");
             var articles = from article in db.Articles
                            orderby article.Title
                            select article;
+
             ViewBag.Articles = articles;
+
+            /*
+            foreach (var art in articles)
+            {
+                if (art.Categories.Any() == false)
+                {
+                    System.Diagnostics.Debug.WriteLine("NULL");
+                }
+            }
+            */
             return View();
         }
         public ActionResult Show(int id)
@@ -45,6 +58,7 @@ namespace EngineDeStiri.Controllers
                 return View();
             }
         }
+
         public ActionResult Edit(int id)
         {
             Article article = db.Articles.Find(id);
@@ -82,5 +96,41 @@ namespace EngineDeStiri.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        public ActionResult AddCategory(int id)
+        {
+            ViewBag.ArticleId = id;
+            ViewBag.CategoryId = db.Categories;
+            return View();
+        }
+
+        [HttpPut]
+        public ActionResult AddCategory(int id, int CategoryId)
+        {
+            try
+            {
+                Article article = db.Articles.Find(id);
+                //if (TryUpdateModel(article))
+                //{
+                    var cat = (from x in db.Categories.OfType<Category>() where x.CategoryId == CategoryId select x).FirstOrDefault();
+                    /*
+                    if (article.Categories == null)
+                    {
+                        article.Categories = new Collection<Category>();
+                    }
+                    */
+                    article.Categories.Add(cat);
+                    db.SaveChanges();
+                //}
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                ViewBag.ArticleId = id;
+                ViewBag.CategoryId = db.Categories;
+                return View();
+            }
+        }
     }
 }

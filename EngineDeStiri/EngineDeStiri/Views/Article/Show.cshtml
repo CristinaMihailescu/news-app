@@ -5,6 +5,22 @@
 }
 <h1>@ViewBag.Article.Title</h1>
 <p>@ViewBag.Article.Date</p>
+<br />
+<div>Categories: </div>
+
+@if (ViewBag.Article.Categories.Count == 0)
+{
+    <div>None</div>
+}
+else
+{
+    foreach (var cat in ViewBag.Article.Categories)
+    {
+            <div>@cat.Name</div>
+    }
+}
+
+
 <!-- A ROUND ViewBag.Article.Author.Username</p> --><p>
 <p>@ViewBag.Article.Thumbnail</p>
 <br />

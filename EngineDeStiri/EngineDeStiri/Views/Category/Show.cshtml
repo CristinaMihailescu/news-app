@@ -1,12 +1,54 @@
-﻿@model EngineDeStiri.Models.ApplicationUser
-
-@{
+﻿@{
     ViewBag.Title = "Show category";
 }
 <h1>@ViewBag.Category.Name</h1>
 <br />
 <!-- SHOW NEWS FROM THIS CATEGORY !!!!!!!!!!!!!!!!!!! -->
 <a href="/Category/Edit/@ViewBag.Category.CategoryId">Edit</a>
+
+<!--
+<form method="post" action="/Category/Show/ A ROUND ViewBag.Category.CategoryId">
+     A ROUND Html.HttpMethodOverride(HttpVerbs.Put)
+    <div class="col-md-10">
+        <select name="SortingOption">
+            <option value="1">Date</option>
+            <option value="2">Name</option>
+        </select>
+    </div>
+    <br />
+    <button type="submit">Sort</button>
+</form>
+    -->
+
+
+@Html.ActionLink("Sort by Date", "Show", new { SortingOption = "Date" })
+<br />
+@Html.ActionLink("Sort by Name", "Show", new { SortingOption = "Name" })
+
+<br />
+<br />
+
+@using (Html.BeginForm())
+{
+    <p>
+        Search: @Html.TextBox("SearchData")
+        <input type="submit" value="Find" />
+    </p>
+}
+<br />
+<br />
+
+@foreach (var article in Model)
+{
+    <p>@article.Title</p>
+    <p>@article.Date</p>
+    //<p>@article.author.Username</p> !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    <p>@article.Thumbnail</p>
+    <a href="/Article/Show/@article.ArticleId">View More</a>
+    <br />
+    <hr />
+    <br />
+}
 
 <form method="post" action="/Category/Delete/@ViewBag.Category.CategoryId">
     @Html.HttpMethodOverride(HttpVerbs.Delete)

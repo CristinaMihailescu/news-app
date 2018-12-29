@@ -14,7 +14,7 @@ namespace EngineDeStiri
     {
         protected void Application_Start()
         {
-            //Database.SetInitializer<ArticleDBContext>(new DropCreateDatabaseIfModelChanges<ArticleDBContext>());
+            Database.SetInitializer<ArticleDBContext>(new DropCreateDatabaseIfModelChanges<ArticleDBContext>());
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

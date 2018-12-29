@@ -248,6 +248,7 @@
     <Content Include="Views\Category\Show.cshtml" />
     <Content Include="Views\Category\Edit.cshtml" />
     <Content Include="Views\Category\New.cshtml" />
+    <Content Include="Views\Article\AddCategory.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
