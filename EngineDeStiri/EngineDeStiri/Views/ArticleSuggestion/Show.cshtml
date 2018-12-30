@@ -1,0 +1,96 @@
+﻿@model EngineDeStiri.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Suggestion";
+}
+
+<h1>@ViewBag.ArticleSuggestion.Title</h1>
+<p>@ViewBag.ArticleSuggestion.Date</p>
+<br />
+@if (ViewBag.ArticleSuggestion.Accepted == -1)
+{
+    <div>This suggestion has not been reviewed yet.</div>
+}
+else
+{
+    if (ViewBag.ArticleSuggestion.Accepted == 1)
+    {
+        <div>This suggestion was accepted.</div>
+    }
+    else
+    {
+        <div>This suggestion was rejected.</div>
+    }
+}
+<br />
+<div>Categories: </div>
+
+@if (ViewBag.ArticleSuggestion.Categories.Count == 0)
+{
+    <div>None</div>
+}
+else
+{
+    foreach (var cat in ViewBag.ArticleSuggestion.Categories)
+    {
+        <div>@cat.Name</div>
+    }
+}
+
+
+<!-- A ROUND ViewBag.ArticleSuggestion.Author.Username</p> --><p>
+<p>@ViewBag.ArticleSuggestion.Content</p>
+<br />
+
+<a href="/ArticleSuggestion/Edit/@ViewBag.ArticleSuggestion.ArticleSuggestionId">Edit</a>
+
+<form method="post" action="/ArticleSuggestion/Delete/@ViewBag.ArticleSuggestion.ArticleSuggestionId">
+    @Html.HttpMethodOverride(HttpVerbs.Delete)
+    <button type="submit">Delete</button>
+</form>
+<hr />
+<a href="/ArticleSuggestion/Index">All Suggestions</a>
+<br />
+<a href="/ArticleSuggestion/New">New</a>
+<br />
+
+<!-- hide this if editor exists -->
+<form method="post" action="/ArticleSuggestion/Accept/@ViewBag.ArticleSuggestion.ArticleSuggestionId">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <button type="submit">Accept</button>
+</form>
+<form method="post" action="/ArticleSuggestion/Reject/@ViewBag.ArticleSuggestion.ArticleSuggestionId">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <button type="submit">Reject</button>
+</form>
+
+<h2>COMMENTS</h2>
+
+@foreach (var com in ViewBag.Comments)
+{
+    <p>
+    <p>@com.Title by @com.AuthorName at @com.Date said:</p>
+    <a href="/Comment/Edit/@com.CommentId">Edit</a>
+
+    <form method="post" action="/Comment/Delete/@com.CommentId">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button type="submit">Delete</button>
+    </form>
+
+    <p>@com.Content</p>
+    </p>
+}
+
+<h2>Add new comment</h2>
+
+<form method="post" action="/ArticleSuggestion/AddComment/@ViewBag.ArticleSuggestion.ArticleSuggestionId">
+    <label>Title</label>
+    <br />
+    <input type="text" name="Title" />
+    <br /><br />
+    <label>Content</label>
+    <br />
+    <input type="text" name="Content" />
+    <br />
+    <button type="submit">Add</button>
+</form>

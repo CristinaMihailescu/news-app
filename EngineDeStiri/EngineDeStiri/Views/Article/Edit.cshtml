@@ -14,11 +14,6 @@
     <br />
     <input type="text" name="Date" value="@ViewBag.Article.Date" />
     <br /><br />
-    <!-- MODIFICA AICI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-    <label>Author</label>
-    <br />
-    <input type="text" name="Author" value="@ViewBag.Article.Author" />
-    <br /> <br />
     <label>Thumbnail</label>
     <br />
     <!-- MODIFICA AICI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
@@ -30,3 +25,5 @@
     <br />
     <button type="submit">Modify</button>
 </form>
+
+@Html.Action("AddCategory", "Article", new { id = ViewBag.Article.ArticleId })

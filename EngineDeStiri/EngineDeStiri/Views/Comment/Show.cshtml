@@ -1,0 +1,23 @@
+﻿@model EngineDeStiri.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Show article";
+}
+<h1>@ViewBag.Comment.Title</h1>
+<p>@ViewBag.Comment.Date</p>
+<p>@ViewBag.Comment.AuthorName</p>
+<br />
+<p>@ViewBag.Comment.Content</p>
+<br />
+
+<a href="/Comment/Edit/@ViewBag.Comment.CommentId">Edit</a>
+
+<form method="post" action="/Comment/Delete/@ViewBag.Comment.CommentId">
+    @Html.HttpMethodOverride(HttpVerbs.Delete)
+    <button type="submit">Delete</button>
+</form>
+<hr />
+<!--
+    <a href="/Comment/New">New</a>
+    <br />
+-->

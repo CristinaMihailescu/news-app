@@ -7,11 +7,11 @@
 
     <div class="col-md-10">
         <select name="CategoryId">
+            <asp:CheckBoxList id="CheckBox" runat="server"></asp:CheckBoxList>
                 @foreach (var cat in ViewBag.CategoryId)
                 {
                     <option value="@cat.CategoryId">@cat.Name</option>
                 }
-            
         </select>
     </div>
 

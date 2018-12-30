@@ -9,17 +9,11 @@ namespace EngineDeStiri.Models
 {
     public class Category
     {
-        /*
-        public Category()
-        {
-            this.Articles = new Collection<Article>();
-        }
-        */
-
         [Key]
         public int CategoryId { get; set; }
         public string Name { get; set; }
 
         public virtual ICollection<Article> Articles { get; set; }
+        public virtual ICollection<ArticleSuggestion> ArticleSuggestions { get; set; }
     }
 }

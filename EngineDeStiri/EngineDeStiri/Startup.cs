@@ -31,7 +31,7 @@ namespace EngineDeStiri
                 var user = new ApplicationUser();
                 user.UserName = "admin@admin.com";
                 user.Email = "admin@admin.com";
-                var adminCreated = UserManager.Create(user, "Administrator1!");
+                var adminCreated = UserManager.Create(user, "P@rola1");
                 if (adminCreated.Succeeded)
                 {
                     UserManager.AddToRole(user.Id, "Administrator");
@@ -47,12 +47,6 @@ namespace EngineDeStiri
             {
                 var role = new IdentityRole();
                 role.Name = "User";
-                roleManager.Create(role);
-            }
-            if (!roleManager.RoleExists("Visitor"))
-            {
-                var role = new IdentityRole();
-                role.Name = "Visitor";
                 roleManager.Create(role);
             }
         }

@@ -1,0 +1,18 @@
+﻿@model EngineDeStiri.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "New";
+}
+<h2>Add new comment</h2>
+
+<form method="post" action="/Comment/New">
+    <label>Title</label>
+    <br />
+    <input type="text" name="Title" />
+    <br /><br />
+    <label>Content</label>
+    <br />
+    <input type="text" name="Content" />
+    <br />
+    <button type="submit">Add</button>
+</form>

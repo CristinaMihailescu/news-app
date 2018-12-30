@@ -29,3 +29,15 @@
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
+
+@foreach (var article in Model)
+{
+    <p>@article.Title</p>
+    <p>@article.Date</p>
+    //<p>@article.author.Username</p> !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    <p>@article.Thumbnail</p>
+    <a href="/Article/Show/@article.ArticleId">View More</a>
+    <br />
+    <hr />
+    <br />
+}

@@ -1,0 +1,19 @@
+﻿@model EngineDeStiri.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "All comments";
+}
+<h2>@ViewBag.Title</h2>
+<br />
+@foreach (var comment in ViewBag.Comments)
+{
+    <p>@comment.Title</p>
+    <p>@comment.Date</p>
+    <p>@comment.AuthorName</p>
+    <p>@comment.Content</p>
+    <a href="/Comment/Show/@comment.CommentId">Manage</a>
+    <br />
+    <hr />
+    <br />
+}
+<br />

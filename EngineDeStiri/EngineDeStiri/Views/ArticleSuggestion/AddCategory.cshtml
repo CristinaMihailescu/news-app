@@ -1,0 +1,18 @@
+﻿@model EngineDeStiri.Models.ApplicationUser
+
+<form method="post" action="/ArticleSuggestion/AddCategory/@ViewBag.ArticleSuggestionId">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <label>Category:</label>
+    <br />
+
+    <div class="col-md-10">
+        <select name="CategoryId">
+            @foreach (var cat in ViewBag.CategoryId)
+            {
+                <option value="@cat.CategoryId">@cat.Name</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit">Add Category</button>
+</form>

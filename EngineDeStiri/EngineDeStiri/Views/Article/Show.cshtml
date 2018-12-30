@@ -38,3 +38,34 @@ else
 <br />
 <a href="/Article/New">New</a>
 <br />
+
+<h2>COMMENTS</h2>
+
+@foreach (var com in ViewBag.Comments)
+{
+    <p>
+        <p>@com.Title by @com.AuthorName at @com.Date said:</p>
+        <a href="/Comment/Edit/@com.CommentId">Edit</a>
+
+        <form method="post" action="/Comment/Delete/@com.CommentId">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button type="submit">Delete</button>
+        </form>
+
+        <p>@com.Content</p>
+    </p>
+}
+
+<h2>Add new comment</h2>
+
+<form method="post" action="/Article/AddComment/@ViewBag.Article.ArticleId">
+    <label>Title</label>
+    <br />
+    <input type="text" name="Title" />
+    <br /><br />
+    <label>Content</label>
+    <br />
+    <input type="text" name="Content" />
+    <br />
+    <button type="submit">Add</button>
+</form>

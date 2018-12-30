@@ -5,6 +5,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Globalization;
 
 namespace EngineDeStiri.Controllers
 {
@@ -13,48 +16,48 @@ namespace EngineDeStiri.Controllers
         private ArticleDBContext db = new ArticleDBContext();
         public ActionResult Index()
         {
-            System.Diagnostics.Debug.WriteLine("HELLO!!!!!!!!!!!!!!!!");
             var articles = from article in db.Articles
                            orderby article.Title
                            select article;
-
             ViewBag.Articles = articles;
-
-            /*
-            foreach (var art in articles)
-            {
-                if (art.Categories.Any() == false)
-                {
-                    System.Diagnostics.Debug.WriteLine("NULL");
-                }
-            }
-            */
             return View();
         }
         public ActionResult Show(int id)
         {
             Article article = db.Articles.Find(id);
             ViewBag.Article = article;
+            ViewBag.Comments = article.Comments;
             return View();
         }
 
         public ActionResult New()
         {
+            ViewBag.CategoryId = db.Categories;
             return View();
         }
         [HttpPost]
         public ActionResult New(Article article)
         {
             article.Date = DateTime.Now;
-            article.Author = "Test";
+            article.Author = User.Identity.GetUserId();
             try
             {
                 db.Articles.Add(article);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                Article art = null;
+                foreach (var x in db.Articles)
+                {
+                    if((x.Title == article.Title) && (x.Author == article.Author) && (x.Date == article.Date) && (x.Content == article.Content) && (x.Thumbnail == article.Thumbnail)) {
+                        art = x;
+                        break;
+                    }
+                }
+                return RedirectToAction("Show", new { id = art.ArticleId });
             }
             catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine("OOPS");
+                ViewBag.CategoryId = db.Categories;
                 return View();
             }
         }
@@ -76,12 +79,11 @@ namespace EngineDeStiri.Controllers
                 {
                     article.Title = requestArticle.Title;
                     article.Date = requestArticle.Date;
-                    article.Author = requestArticle.Author;
                     article.Thumbnail = requestArticle.Thumbnail;
                     article.Content = requestArticle.Content;
                     db.SaveChanges();
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Show", new { id = article.ArticleId });
             }
             catch (Exception e)
             {
@@ -113,17 +115,11 @@ namespace EngineDeStiri.Controllers
                 //if (TryUpdateModel(article))
                 //{
                     var cat = (from x in db.Categories.OfType<Category>() where x.CategoryId == CategoryId select x).FirstOrDefault();
-                    /*
-                    if (article.Categories == null)
-                    {
-                        article.Categories = new Collection<Category>();
-                    }
-                    */
                     article.Categories.Add(cat);
                     db.SaveChanges();
                 //}
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Show", new { id = article.ArticleId });
             }
             catch (Exception e)
             {
@@ -131,6 +127,33 @@ namespace EngineDeStiri.Controllers
                 ViewBag.CategoryId = db.Categories;
                 return View();
             }
-        }
+        }
+
+        public ActionResult AddComment(int id)
+        {
+            ViewBag.ArticleId = id;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddComment(int id, Comment comment)
+        {
+            Article article = db.Articles.Find(id); //get current article
+            comment.AuthorId = User.Identity.GetUserId();
+            comment.AuthorName = User.Identity.Name;
+            comment.Date = DateTime.Now;
+            
+            try
+            {
+                article.Comments.Add(comment);
+                comment.Article = article; //might not be necessary
+                db.SaveChanges();
+                return RedirectToAction("Show", new { id = article.ArticleId });
+            }
+            catch (Exception e)
+            {
+                return View();
+            }
+        }
     }
 }
