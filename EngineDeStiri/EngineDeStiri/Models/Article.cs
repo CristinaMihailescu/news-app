@@ -11,22 +11,16 @@ namespace EngineDeStiri.Models
 {
     public class Article
     {
-        /*
-        public Article()
-        {
-            this.Categories = new Collection<Category>();
-        }
-        */
-
         [Key]
         public int ArticleId { get; set; }
         public string Title { get; set; }
         public DateTime Date { get; set; }
-        //<!-- MODIFICA AICI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-        public string Author { get; set; }
-        //<!-- MODIFICA AICI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+        public string Author { get; set; } //id
+        public string Username { get; set; }
         public string Thumbnail { get; set; }
+        public string Headline { get; set; }
         public string Content { get; set; }
+        public string URL { get; set; }
 
         public virtual ICollection<Category> Categories { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }

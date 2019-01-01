@@ -6,6 +6,7 @@
 <h2>Edit</h2>
 <form method="post" action="/ArticleSuggestion/Edit/@ViewBag.ArticleSuggestion.ArticleSuggestionId">
     @Html.HttpMethodOverride(HttpVerbs.Put)
+    <input type="hideen" name="Title" value="@ViewBag.ArticleSuggestion.UserId" />
     <label>Title</label>
     <br />
     <input type="text" name="Title" value="@ViewBag.ArticleSuggestion.Title" />

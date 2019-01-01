@@ -15,6 +15,7 @@ namespace EngineDeStiri.Controllers
 
         private ArticleDBContext db = new ArticleDBContext();
 
+        [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
             var comments = from comment in db.Comments
@@ -31,6 +32,7 @@ namespace EngineDeStiri.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator, Editor, User")]
         public ActionResult Edit(int id)
         {
             Comment comment = db.Comments.Find(id);
@@ -41,32 +43,42 @@ namespace EngineDeStiri.Controllers
             }
             else
             {
-                return RedirectToAction("Show", "Article", new { id = comment.Article.ArticleId });
+                return View("Unauthorized");
             }
         }
 
         [HttpPut]
+        [Authorize(Roles = "Administrator, Editor, User")]
         public ActionResult Edit(int id, Comment requestComment)
         {
             Comment comment = db.Comments.Find(id);
-            try
+            if (User.Identity.GetUserId() == comment.AuthorId || User.IsInRole("Administrator"))
             {
-                if (TryUpdateModel(comment))
+                try
                 {
-                    comment.Title = requestComment.Title;
-                    comment.Date = requestComment.Date;
-                    comment.Content = requestComment.Content;
-                    db.SaveChanges();
+                    if (TryUpdateModel(comment))
+                    {
+                        comment.Title = requestComment.Title;
+                        comment.Date = requestComment.Date;
+                        comment.Content = requestComment.Content;
+                        db.SaveChanges();
+                    }
+                    return RedirectToAction("Show", "Article", new { id = comment.Article.ArticleId });
                 }
-                return RedirectToAction("Show", "Article", new { id = comment.Article.ArticleId });
+                catch (Exception e)
+                {
+                    return View();
+                }
             }
-            catch (Exception e)
+            else
             {
-                return View();
+                return View("Unauthorized");
             }
+            
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Administrator, Editor, User")]
         public ActionResult Delete(int id)
         {
             Comment comment = db.Comments.Find(id);
@@ -75,9 +87,12 @@ namespace EngineDeStiri.Controllers
             {
                 db.Comments.Remove(comment);
                 db.SaveChanges();
+                return RedirectToAction("Show", "Article", new { id = ArticleId });
             }
-
-            return RedirectToAction("Show", "Article", new { id = ArticleId });
+            else
+            {
+                return View("Unauthorized");
+            }
         }
     }
 }

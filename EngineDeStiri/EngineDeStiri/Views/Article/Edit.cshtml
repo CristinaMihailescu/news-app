@@ -6,6 +6,7 @@
 <h2>Edit</h2>
 <form method="post" action="/Article/Edit/@ViewBag.Article.ArticleId">
     @Html.HttpMethodOverride(HttpVerbs.Put)
+    <input type="hidden" name="Author" value="@ViewBag.Article.Author" />
     <label>Title</label>
     <br />
     <input type="text" name="Title" value="@ViewBag.Article.Title" />
@@ -16,12 +17,22 @@
     <br /><br />
     <label>Thumbnail</label>
     <br />
-    <!-- MODIFICA AICI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
     <input type="text" name="Thumbnail" value="@ViewBag.Article.Thumbnail" />
+    <br /><br />
+    <label>Headline</label>
+    <br />
+    <input type="text" name="Content" value="@ViewBag.Article.Headline" />
     <br /><br />
     <label>Content</label>
     <br />
-    <input type="text" name="Content" value="@ViewBag.Article.Content" />
+    @if (ViewBag.Article.URL == null)
+    {
+        <input type="text" name="Content" value="@ViewBag.Article.Content" />
+    }
+    else
+    {
+        <input type="text" name="URL" value="@ViewBag.Article.URL" />
+    }
     <br />
     <button type="submit">Modify</button>
 </form>

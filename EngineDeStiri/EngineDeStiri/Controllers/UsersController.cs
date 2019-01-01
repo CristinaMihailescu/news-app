@@ -14,6 +14,7 @@ namespace EngineDeStiri.Controllers
         private ApplicationDbContext db = ApplicationDbContext.Create();
 
         // GET: Users
+        [Authorize(Roles = "Administrator, Editor, User")]
         public ActionResult Index()
         {
             var users = from user in db.Users
@@ -23,6 +24,7 @@ namespace EngineDeStiri.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(string id)
         {
             ApplicationUser user = db.Users.Find(id);
@@ -31,6 +33,7 @@ namespace EngineDeStiri.Controllers
             ViewBag.userRole = userRole.RoleId;
             return View(user);
         }
+
         [NonAction]
         public IEnumerable<SelectListItem> GetAllRoles()
         {
@@ -46,7 +49,9 @@ namespace EngineDeStiri.Controllers
             }
             return selectList;
         }
+
         [HttpPut]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(string id, ApplicationUser newData)
         {
             ApplicationUser user = db.Users.Find(id);

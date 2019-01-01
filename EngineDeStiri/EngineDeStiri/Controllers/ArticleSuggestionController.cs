@@ -28,12 +28,15 @@ namespace EngineDeStiri.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator, Editor, User")]
         public ActionResult New()
         {
             ViewBag.CategoryId = db.Categories;
             return View();
         }
+
         [HttpPost]
+        [Authorize(Roles = "Administrator, Editor, User")]
         public ActionResult New(ArticleSuggestion articleSuggestion)
         {
             articleSuggestion.Date = DateTime.Now;
@@ -61,100 +64,160 @@ namespace EngineDeStiri.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator, Editor, User")]
         public ActionResult Edit(int id)
         {
             ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id);
-            ViewBag.ArticleSuggestion = articleSuggestion;
-            return View();
+            if (articleSuggestion.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+            {
+                ViewBag.ArticleSuggestion = articleSuggestion;
+                return View();
+            }
+            else
+            {
+                return View("Unauthorized");
+            }
         }
 
         [HttpPut]
+        [Authorize(Roles = "Administrator, Editor, User")]
         public ActionResult Edit(int id, ArticleSuggestion requestArticleSuggestion)
         {
-            try
+            if (requestArticleSuggestion.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
             {
-                ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id);
-                if (TryUpdateModel(articleSuggestion))
+                try
                 {
-                    articleSuggestion.Title = requestArticleSuggestion.Title;
-                    articleSuggestion.Date = requestArticleSuggestion.Date;
-                    articleSuggestion.Content = requestArticleSuggestion.Content;
-                    db.SaveChanges();
+                    ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id);
+                    if (TryUpdateModel(articleSuggestion))
+                    {
+                        articleSuggestion.Title = requestArticleSuggestion.Title;
+                        articleSuggestion.Date = requestArticleSuggestion.Date;
+                        articleSuggestion.Content = requestArticleSuggestion.Content;
+                        db.SaveChanges();
+                    }
+                    return RedirectToAction("Show", new { id = articleSuggestion.ArticleSuggestionId });
                 }
-                return RedirectToAction("Show", new { id = articleSuggestion.ArticleSuggestionId });
+                catch (Exception e)
+                {
+                    return View();
+                }
             }
-            catch (Exception e)
+            else
             {
-                return View();
+                return View("Unauthorized");
             }
+            
         }
+
         [HttpDelete]
+        [Authorize(Roles = "Administrator, Editor, User")]
         public ActionResult Delete(int id)
         {
             ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id);
-            db.ArticleSuggestions.Remove(articleSuggestion);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (articleSuggestion.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+            {
+                db.ArticleSuggestions.Remove(articleSuggestion);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View("Unauthorized");
         }
 
+        [Authorize(Roles = "Administrator, Editor, User")]
         public ActionResult AddCategory(int id)
         {
-            ViewBag.ArticleSuggestionId = id;
-            ViewBag.CategoryId = db.Categories;
-            return View();
-        }
-
-        [HttpPut]
-        public ActionResult AddCategory(int id, int CategoryId)
-        {
-            try
-            {
-                ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id);
-                //if (TryUpdateModel(article))
-                //{
-                var cat = (from x in db.Categories.OfType<Category>() where x.CategoryId == CategoryId select x).FirstOrDefault();
-                articleSuggestion.Categories.Add(cat);
-                db.SaveChanges();
-                //}
-
-                return RedirectToAction("Show", new { id = articleSuggestion.ArticleSuggestionId });
-            }
-            catch (Exception e)
+            ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id);
+            if (articleSuggestion.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
             {
                 ViewBag.ArticleSuggestionId = id;
                 ViewBag.CategoryId = db.Categories;
                 return View();
             }
+            else
+            {
+                return View("Unauthorized");
+            }
+            
         }
 
+        [HttpPut]
+        [Authorize(Roles = "Administrator, Editor, User")]
+        public ActionResult AddCategory(int id, int CategoryId)
+        {
+            ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id);
+            if (articleSuggestion.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+            {
+                try
+                {
+                    //if (TryUpdateModel(article))
+                    //{
+                    var cat = (from x in db.Categories.OfType<Category>() where x.CategoryId == CategoryId select x).FirstOrDefault();
+                    articleSuggestion.Categories.Add(cat);
+                    db.SaveChanges();
+                    //}
+
+                    return RedirectToAction("Show", new { id = articleSuggestion.ArticleSuggestionId });
+                }
+                catch (Exception e)
+                {
+                    ViewBag.ArticleSuggestionId = id;
+                    ViewBag.CategoryId = db.Categories;
+                    return View();
+                }
+            }
+            else
+            {
+                return View("Unauthorized");
+            }
+            
+        }
+
+        [Authorize(Roles = "Administrator, Editor, User")]
         public ActionResult AddComment(int id)
         {
-            ViewBag.ArticleSuggestionId = id;
-            return View();
+            if (User.IsInRole("User") || User.IsInRole("Editor") || User.IsInRole("Administrator"))
+            {
+                ViewBag.ArticleSuggestionId = id;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "AccountController");
+            }
+            
         }
 
         [HttpPost]
         public ActionResult AddComment(int id, Comment comment)
         {
-            ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id); //get current article
-            comment.AuthorId = User.Identity.GetUserId();
-            comment.AuthorName = User.Identity.Name;
-            comment.Date = DateTime.Now;
+            if (User.IsInRole("User") || User.IsInRole("Editor") || User.IsInRole("Administrator"))
+            {
+                ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id); //get current article
+                comment.AuthorId = User.Identity.GetUserId();
+                comment.AuthorName = User.Identity.Name;
+                comment.Date = DateTime.Now;
 
-            try
-            {
-                articleSuggestion.Comments.Add(comment);
-                comment.ArticleSuggestion = articleSuggestion; //might not be necessary
-                db.SaveChanges();
-                return RedirectToAction("Show", new { id = articleSuggestion.ArticleSuggestionId });
+                try
+                {
+                    articleSuggestion.Comments.Add(comment);
+                    comment.ArticleSuggestion = articleSuggestion; //might not be necessary
+                    db.SaveChanges();
+                    return RedirectToAction("Show", new { id = articleSuggestion.ArticleSuggestionId });
+                }
+                catch (Exception e)
+                {
+                    return View();
+                }
             }
-            catch (Exception e)
+            else
             {
-                return View();
+                return RedirectToAction("Login", "AccountController");
             }
+            
         }
 
         [HttpPut]
+        [Authorize(Roles = "Administrator, Editor")]
         public ActionResult Accept(int id)
         {
             var articleSuggestion = db.ArticleSuggestions.Find(id);
@@ -176,6 +239,7 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Administrator, Editor")]
         public ActionResult Reject(int id)
         {
             var articleSuggestion = db.ArticleSuggestions.Find(id);

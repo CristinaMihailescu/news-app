@@ -1,0 +1,28 @@
+﻿del EngineDeStiri.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "New";
+}
+<h2>Post a quick article</h2>
+
+<form method="post" action="/Article/Quick">
+    <label>Title</label>
+    <br />
+    <input type="text" name="Title" />
+    <br /><br />
+    <!-- MODIFICA AICI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+    <label>Thumbnail</label>
+    <br />
+    <input type="text" name="Thumbnail" />
+    <br /><br />
+    <label>Headline</label>
+    <br />
+    <input type="text" name="Headline" />
+    <br /><br />
+    <label>URL</label>
+    <br />
+    <!-- validation of URL -->
+    <input type="text" name="URL" />
+    <br />
+    <button type="submit">Add</button>
+</form>

@@ -11,6 +11,7 @@ namespace EngineDeStiri.Controllers
     public class CategoryController : Controller
     {
         private ArticleDBContext db = new ArticleDBContext();
+
         public ActionResult Index()
         {
             var categories = from category in db.Categories
@@ -20,7 +21,6 @@ namespace EngineDeStiri.Controllers
             return View();
         }
 
-        
         public ActionResult Show(int id, string SortingOption, string SearchData)
         {
 
@@ -54,13 +54,15 @@ namespace EngineDeStiri.Controllers
                     break;
             }
         }
-        
+
+        [Authorize(Roles = "Administrator")]
         public ActionResult New()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public ActionResult New(Category category)
         {
             try
@@ -75,39 +77,63 @@ namespace EngineDeStiri.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(int id)
         {
-            Category category = db.Categories.Find(id);
-            ViewBag.Category = category;
-            return View();
-        }
-
-        [HttpPut]
-        public ActionResult Edit(int id, Category requestCategory)
-        {
-            try
+            if (id < 8)
+            {
+                return View("DefaultCategoryDeleteError");
+            }
+            else
             {
                 Category category = db.Categories.Find(id);
-                if (TryUpdateModel(category))
-                {
-                    category.Name = requestCategory.Name;
-                    db.SaveChanges();
-                }
-                return RedirectToAction("Index");
-            }
-            catch (Exception e)
-            {
+                ViewBag.Category = category;
                 return View();
             }
         }
 
+        [HttpPut]
+        [Authorize(Roles = "Administrator")]
+        public ActionResult Edit(int id, Category requestCategory)
+        {
+            if (id < 8)
+            {
+                return View("DefaultCategoryDeleteError");
+            }
+            else
+            {
+                try
+                {
+                    Category category = db.Categories.Find(id);
+                    if (TryUpdateModel(category))
+                    {
+                        category.Name = requestCategory.Name;
+                        db.SaveChanges();
+                    }
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    return View();
+                }
+            }
+        }
+
         [HttpDelete]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int id)
         {
-            Category category = db.Categories.Find(id);
-            db.Categories.Remove(category);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (id < 8)
+            {
+                return View("DefaultCategoryDeleteError");
+            }
+            else
+            {
+                Category category = db.Categories.Find(id);
+                db.Categories.Remove(category);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
         }
     }
 }

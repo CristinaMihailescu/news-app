@@ -4,7 +4,7 @@
     ViewBag.Title = "Show article";
 }
 <h1>@ViewBag.Article.Title</h1>
-<p>@ViewBag.Article.Date</p>
+Posted by <p>@ViewBag.Article.Username</p> on <p>@ViewBag.Article.Date</p>
 <br />
 <div>Categories: </div>
 
@@ -20,11 +20,20 @@ else
     }
 }
 
-
 <!-- A ROUND ViewBag.Article.Author.Username</p> --><p>
 <p>@ViewBag.Article.Thumbnail</p>
 <br />
-<p>@ViewBag.Article.Content</p>
+<p>@ViewBag.Article.Headline</p>
+<br />
+@if (ViewBag.Article.URL == null)
+{
+    <p>@ViewBag.Article.Content</p>
+}
+else
+{
+    <p><a href="@ViewBag.Article.URL">Click here to read the article!</a></p>
+}
+
 <br />
 
 <a href="/Article/Edit/@ViewBag.Article.ArticleId">Edit</a>
