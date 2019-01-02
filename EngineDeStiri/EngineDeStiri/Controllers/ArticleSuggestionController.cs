@@ -28,7 +28,7 @@ namespace EngineDeStiri.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult New()
         {
             ViewBag.CategoryId = db.Categories;
@@ -36,7 +36,7 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult New(ArticleSuggestion articleSuggestion)
         {
             articleSuggestion.Date = DateTime.Now;
@@ -64,7 +64,7 @@ namespace EngineDeStiri.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult Edit(int id)
         {
             ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id);
@@ -80,7 +80,7 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult Edit(int id, ArticleSuggestion requestArticleSuggestion)
         {
             if (requestArticleSuggestion.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
@@ -110,7 +110,7 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult Delete(int id)
         {
             ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id);
@@ -123,7 +123,7 @@ namespace EngineDeStiri.Controllers
             return View("Unauthorized");
         }
 
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult AddCategory(int id)
         {
             ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id);
@@ -141,7 +141,7 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult AddCategory(int id, int CategoryId)
         {
             ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id);
@@ -172,7 +172,7 @@ namespace EngineDeStiri.Controllers
             
         }
 
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult AddComment(int id)
         {
             if (User.IsInRole("User") || User.IsInRole("Editor") || User.IsInRole("Administrator"))
@@ -217,7 +217,7 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Administrator, Editor")]
+        [MyAuthorize(Roles = "Administrator, Editor")]
         public ActionResult Accept(int id)
         {
             var articleSuggestion = db.ArticleSuggestions.Find(id);
@@ -239,7 +239,7 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Administrator, Editor")]
+        [MyAuthorize(Roles = "Administrator, Editor")]
         public ActionResult Reject(int id)
         {
             var articleSuggestion = db.ArticleSuggestions.Find(id);

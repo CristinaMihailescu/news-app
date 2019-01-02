@@ -3,34 +3,25 @@
     int counter = 0;
 }
 
-<div class="row">
+    <div class="card-deck mb-3 text-center row">
     @foreach (var article in Model)
     {
         if (counter != 0 && counter % 3 == 0)
         {
             @:</div>
-            @:<div class="row">
+            @:<div class="card-deck mb-3 text-center row">
         }
-        <div class="col-md-4">
-            <div class="card">
-                <img class="card-img-top" style='height: 200px; width: 100%; object-fit: cover' src="@article.Thumbnail" alt="Card image cap">
+        counter++;
+        <div class="col-md-4 d-flex flex-column">
+            <div class="card text-white bg-dark box-shadow mb-4 d-flex flex-column">
+                <img class="my-auto card-img-top" style="border-bottom: solid; border-color: white; height: 200px; object-fit: cover" src="@article.Thumbnail" alt="Card image cap">
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">@article.Title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">by @article.Username at @article.Date</h6>
-                    <h6 class="card-subtitle mb-2" style="overflow: hidden; white-space:nowrap; text-overflow:ellipsis">@article.Headline</h6>
-                    @if (article.URL == null)
-                    {
-                        <p class="card-text" style="overflow: hidden; white-space:nowrap; text-overflow:ellipsis">@article.Content</p>
-                        <a href="/Article/Show/@article.ArticleId" class="align-self-end btn btn-primary">Read</a>
-                    }
-                    else
-                    {
-                        <p class="card-text" style="overflow: hidden; white-space:nowrap; text-overflow:ellipsis"></p>
-                        <a href="@article.URL" class="align-self-end btn btn-warning">Link</a>
-                    }
+                    <div class="card-title">
+                        <h5 class="font-weight-normal">@article.Title</h5>
+                    </div>
+                    <a role="button" href="/Article/Show/@article.ArticleId" class="mt-auto btn btn-block btn-outline-light">Read</a>
                 </div>
             </div>
         </div>
-        counter++;
     }
-</div>
+    </div>

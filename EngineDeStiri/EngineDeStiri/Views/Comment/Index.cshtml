@@ -3,17 +3,17 @@
 @{
     ViewBag.Title = "All comments";
 }
-<h2>@ViewBag.Title</h2>
-<br />
+<h2>@ViewBag.Title</h2> 
 @foreach (var comment in ViewBag.Comments)
 {
-    <p>@comment.Title</p>
-    <p>@comment.Date</p>
-    <p>@comment.AuthorName</p>
-    <p>@comment.Content</p>
-    <a href="/Comment/Show/@comment.CommentId">Manage</a>
-    <br />
-    <hr />
-    <br />
+    <div style="box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px; padding: 2%;">
+        <h5><b>@comment.Title</b></h5>
+        <p class="small"> by <kbd>@comment.AuthorName</kbd> on @comment.Date</p>
+        <p>@comment.Content</p>
+        <a role="button" class="btn btn-dark col-md-2 mr-2" href="/Comment/Show/@comment.CommentId">Manage</a>
+    </div>
+
 }
 <br />
+
+

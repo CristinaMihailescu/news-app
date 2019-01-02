@@ -1,4 +1,4 @@
-﻿del EngineDeStiri.Models.ApplicationUser
+﻿@model EngineDeStiri.Models.ApplicationUser
 
 @{
     ViewBag.Title = "New";
@@ -6,23 +6,25 @@
 <h2>Post a quick article</h2>
 
 <form method="post" action="/Article/Quick">
-    <label>Title</label>
-    <br />
-    <input type="text" name="Title" />
-    <br /><br />
-    <!-- MODIFICA AICI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-    <label>Thumbnail</label>
-    <br />
-    <input type="text" name="Thumbnail" />
-    <br /><br />
-    <label>Headline</label>
-    <br />
-    <input type="text" name="Headline" />
-    <br /><br />
-    <label>URL</label>
-    <br />
-    <!-- validation of URL -->
-    <input type="text" name="URL" />
-    <br />
-    <button type="submit">Add</button>
+    <div class="form-group">
+        <label>Title</label>
+        <br />
+        <input type="text" name="Title" class="form-control" />
+        <br /><br />
+        <label>Thumbnail URL</label>
+        <br />
+        <input type="text" name="Thumbnail" class="form-control" />
+        <br /><br />
+        <label>Headline</label>
+        <br />
+        <textarea type="text" name="Headline" class="form-control" rows="3"> </textarea>
+        <br /><br />
+        <label>Website</label>
+        <br />
+        <!-- validation of URL -->
+        <input type="text" name="URL" class="form-control" placeholder="https://www.myimage.com/" />
+        <br />
+        <button type="submit" class="btn btn-dark col-md-2 mr-2">Post</button>
+    </div>
 </form>
+

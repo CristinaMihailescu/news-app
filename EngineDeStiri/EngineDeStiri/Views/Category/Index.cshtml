@@ -1,17 +1,30 @@
 ﻿@model EngineDeStiri.Models.ApplicationUser
 
 @{
-    ViewBag.Title = "All categories";
+    ViewBag.Title = "Categories";
+    int counter = 0;
 }
-<h2>@ViewBag.Title</h2>
-<!-- <a href="/Article/New">New Article</a> -->
-<br />
-@foreach (var category in ViewBag.Categories)
-{
-    <p>@category.Name</p>
-    <a href="/Category/Show/@category.CategoryId">View More</a>
-    <br />
-    <hr />
-    <br />
-}
-<br />
+<p><h2>@ViewBag.Title</h2></p>
+<p><a role="button" href="/Category/New" class="btn btn-dark col-md-2 mr-2">New</a></p>
+
+<div class="card-deck mb-3 text-center row">
+    @foreach (var category in ViewBag.Categories)
+    {
+        if (counter != 0 && counter % 3 == 0)
+        {
+            @:</div>
+            @:<div class="card-deck mb-3 text-center row">
+        }
+        counter++;
+        <div class="col-md-4 d-flex flex-column">
+            <div class="card text-white bg-dark box-shadow mb-4 d-flex flex-column">
+                <div class="card-body d-flex flex-column">
+                    <div class="card-title">
+                        <h5 class="font-weight-normal">@category.Name</h5>
+                    </div>
+                    <a role="button" href="/Category/Show/@category.CategoryId" class="mt-auto btn btn-block btn-outline-light">View</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

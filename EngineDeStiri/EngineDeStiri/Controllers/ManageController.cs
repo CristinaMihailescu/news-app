@@ -32,9 +32,9 @@ namespace EngineDeStiri.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -59,19 +59,37 @@ namespace EngineDeStiri.Controllers
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                //: message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
+                //: message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
             var userId = User.Identity.GetUserId();
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
-                PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
+                //PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
+            if (User.IsInRole("Administrator"))
+            {
+                ViewBag.Role = "Administrator";
+            }
+            else
+            {
+                if (User.IsInRole("Editor"))
+                {
+                    ViewBag.Role = "Administrator";
+                }
+                else
+                {
+                    if(User.IsInRole("User")) {
+                        ViewBag.Role = "User";
+                    }
+                }
+            }
+            
             return View(model);
         }
 
@@ -108,6 +126,7 @@ namespace EngineDeStiri.Controllers
 
         //
         // POST: /Manage/AddPhoneNumber
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
@@ -129,7 +148,7 @@ namespace EngineDeStiri.Controllers
             }
             return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
         }
-
+        */
         //
         // POST: /Manage/EnableTwoFactorAuthentication
         [HttpPost]
@@ -162,13 +181,14 @@ namespace EngineDeStiri.Controllers
 
         //
         // GET: /Manage/VerifyPhoneNumber
+        /*
         public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
         {
             var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), phoneNumber);
             // Send an SMS through the SMS provider to verify the phone number
             return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
         }
-
+        
         //
         // POST: /Manage/VerifyPhoneNumber
         [HttpPost]
@@ -193,7 +213,7 @@ namespace EngineDeStiri.Controllers
             ModelState.AddModelError("", "Failed to verify phone");
             return View(model);
         }
-
+        
         //
         // GET: /Manage/RemovePhoneNumber
         public async Task<ActionResult> RemovePhoneNumber()
@@ -210,7 +230,7 @@ namespace EngineDeStiri.Controllers
             }
             return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
         }
-
+        */
         //
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
@@ -331,7 +351,7 @@ namespace EngineDeStiri.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -382,6 +402,6 @@ namespace EngineDeStiri.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }

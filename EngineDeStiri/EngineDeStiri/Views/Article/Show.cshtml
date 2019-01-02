@@ -3,78 +3,98 @@
 @{
     ViewBag.Title = "Show article";
 }
-<h1>@ViewBag.Article.Title</h1>
-Posted by <p>@ViewBag.Article.Username</p> on <p>@ViewBag.Article.Date</p>
-<br />
-<div>Categories: </div>
 
-@if (ViewBag.Article.Categories.Count == 0)
-{
-    <div>None</div>
-}
-else
-{
-    foreach (var cat in ViewBag.Article.Categories)
-    {
-            <div>@cat.Name</div>
-    }
-}
+<p>
+    <h1><b>@ViewBag.Article.Title</b></h1>
+</p>
 
-<!-- A ROUND ViewBag.Article.Author.Username</p> --><p>
-<p>@ViewBag.Article.Thumbnail</p>
-<br />
-<p>@ViewBag.Article.Headline</p>
-<br />
-@if (ViewBag.Article.URL == null)
-{
-    <p>@ViewBag.Article.Content</p>
-}
-else
-{
-    <p><a href="@ViewBag.Article.URL">Click here to read the article!</a></p>
-}
+<p>Posted by <kbd>@ViewBag.Article.Username</kbd> on @ViewBag.Article.Date</p>
 
-<br />
-
-<a href="/Article/Edit/@ViewBag.Article.ArticleId">Edit</a>
-
-<form method="post" action="/Article/Delete/@ViewBag.Article.ArticleId">
-    @Html.HttpMethodOverride(HttpVerbs.Delete)
-    <button type="submit">Delete</button>
-</form>
-<hr />
-<a href="/Article/Index">All Articles</a>
-<br />
-<a href="/Article/New">New</a>
-<br />
-
-<h2>COMMENTS</h2>
-
-@foreach (var com in ViewBag.Comments)
-{
+<div class="clearfix">
     <p>
-        <p>@com.Title by @com.AuthorName at @com.Date said:</p>
-        <a href="/Comment/Edit/@com.CommentId">Edit</a>
-
-        <form method="post" action="/Comment/Delete/@com.CommentId">
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
-            <button type="submit">Delete</button>
-        </form>
-
-        <p>@com.Content</p>
+        <img src="@ViewBag.Article.Thumbnail" style="margin-bottom:20px; margin-right:20px; float:left; border: solid; border-color: darkgray; max-height: 500px; object-fit: cover">
     </p>
+
+    <p>
+        Categories:
+
+        @if (ViewBag.Article.Categories.Count == 0)
+        {
+            <kbd>None</kbd>
+        }
+        else
+        {
+            foreach (var cat in ViewBag.Article.Categories)
+            {
+                <kbd>@cat.Name</kbd>
+            }
+        }
+        @if(ViewBag.ShowAdditionalButtons == "Yes") {
+            <kbd><a role="button" style="text-decoration: none; color: white;" href="/Article/AddCategory/@ViewBag.Article.ArticleId">+</a></kbd>
+        }
+    </p>
+    <p style="text-indent: 5%;"><h2><b>@ViewBag.Article.Headline</b></h2></p>
+    <p>
+        @if (ViewBag.Article.URL == null)
+        {
+        <p style="text-indent: 5%;">@ViewBag.Article.Content</p>
+        }
+        else
+        {
+            <p><a href="@ViewBag.Article.URL">Click here to read the article!</a></p>
+        }
+    </p>
+</div>
+@if (ViewBag.ShowAdditionalButtons == "Yes")
+{
+    <div class="row mb-4">
+        <a role="button" class="btn btn-dark col-md-2 mr-2" href="/Article/Edit/@ViewBag.Article.ArticleId">Edit</a>
+        <a role="button" class="btn btn-dark col-md-2 mr-2" href="/Article/Delete/@ViewBag.Article.ArticleId">Delete</a>
+    </div>
 }
 
-<h2>Add new comment</h2>
+<p>
+    <h2>COMMENTS</h2>
 
-<form method="post" action="/Article/AddComment/@ViewBag.Article.ArticleId">
-    <label>Title</label>
-    <br />
-    <input type="text" name="Title" />
-    <br /><br />
-    <label>Content</label>
-    <br />
-    <input type="text" name="Content" />
-    <br />
-    <button type="submit">Add</button>
-</form>
+    @foreach (var com in ViewBag.Comments)
+    {
+    <div style="box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px; padding: 2%;">
+        <h5><b>@com.Title</b></h5>
+        <p class="small"> by <kbd>@com.AuthorName</kbd> on @com.Date</p>
+        <p>@com.Content</p>
+        @if (com.AuthorId == ViewBag.UserId || ViewBag.IsAdmin == "Yes")
+        {
+            <div class="row mb-4">
+                <a role="button" class="btn btn-dark col-md-2 mr-2" href="/Comment/Edit/@com.CommentId">Edit</a>
+                <a role="button" class="btn btn-dark col-md-2 mr-2" href="/Comment/Delete/@com.CommentId">Delete</a>
+            </div>
+        }
+    </div>
+    }
+
+    @if (ViewBag.IsLoggedIn == "Yes")
+    {
+        <p><h2>Add a new comment</h2></p>
+        <form method="post" action="/Article/AddComment/@ViewBag.Article.ArticleId">
+            <div class="form-group" style ="box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px; padding: 2%;">
+                <label>Title</label>
+                <br />
+                <input type="text" name="Title" class="form-control" />
+                <br /><br />
+                <label>Content</label>
+                <br />
+                <textarea type="text" name="Content" class="form-control" rows="2"></textarea>
+                <br />
+                <button type="submit" class="btn btn-dark col-md-2 mr-2">Add</button>
+            </div>
+        </form>
+    }
+    else
+    {
+        <p><h2>Login to add a comment!</h2></p>
+    }
+</p>
+
+
+
+

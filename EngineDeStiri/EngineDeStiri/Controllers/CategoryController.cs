@@ -55,14 +55,14 @@ namespace EngineDeStiri.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrator")]
+        [MyAuthorize(Roles = "Administrator")]
         public ActionResult New()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
+        [MyAuthorize(Roles = "Administrator")]
         public ActionResult New(Category category)
         {
             try
@@ -77,7 +77,7 @@ namespace EngineDeStiri.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrator")]
+        [MyAuthorize(Roles = "Administrator")]
         public ActionResult Edit(int id)
         {
             if (id < 8)
@@ -93,7 +93,7 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Administrator")]
+        [MyAuthorize(Roles = "Administrator")]
         public ActionResult Edit(int id, Category requestCategory)
         {
             if (id < 8)
@@ -120,7 +120,7 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = "Administrator")]
+        [MyAuthorize(Roles = "Administrator")]
         public ActionResult Delete(int id)
         {
             if (id < 8)

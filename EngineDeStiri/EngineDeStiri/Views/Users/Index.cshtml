@@ -2,31 +2,41 @@
 
 @{
     ViewBag.Title = "User list";
+    int count = 1;
 }
+<p>
+    <h2>@ViewBag.Title</h2>
+</p>
 
-<ol class="breadcrumb">
-    <li><h3>@ViewBag.Title</h3></li>
-</ol>
-@foreach (var user in ViewBag.UsersList)
-{
-    <div class="panel-heading">Username: @user.UserName</div>
-    <div class="panel-body">
-        <i class="glyphicon glyphicon-envelope"></i> Email:
-        <span class="label label-default">@user.Email</span>
-        <br /><br />
-
-        @if (@user.PhoneNumber != null)
+<table class="table" style="margin: 0;">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col">Details</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in ViewBag.UsersList)
         {
-            <i class="glyphicon glyphicon-phone"></i>@:Phone Number:
-            <span class="label label-default">@user.PhoneNumber</span>
+            <tr>
+                <th scope="row">@count</th>
+                <td>
+                    <kbd>@user.UserName</kbd>                 
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-success" href="/Users/Edit/@user.Id">
+                        Details
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-success" href="/Users/Delete/@user.Id">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            count++;
         }
-    </div>
-    <div class="panel-footer">
-        <a class="btn btn-sm btn-success" href="/Users/Edit/@user.Id">
-            Details
-        </a>
-    </div>
-    <br /><br />
-}
-
-[Authorize(Roles = "Administrator")]
+    </tbody>
+</table>

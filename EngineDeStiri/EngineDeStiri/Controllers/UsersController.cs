@@ -3,6 +3,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,7 +16,7 @@ namespace EngineDeStiri.Controllers
         private ApplicationDbContext db = ApplicationDbContext.Create();
 
         // GET: Users
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult Index()
         {
             var users = from user in db.Users
@@ -24,7 +26,7 @@ namespace EngineDeStiri.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Administrator")]
+        [MyAuthorize(Roles = "Administrator")]
         public ActionResult Edit(string id)
         {
             ApplicationUser user = db.Users.Find(id);
@@ -51,7 +53,7 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Administrator")]
+        [MyAuthorize(Roles = "Administrator")]
         public ActionResult Edit(string id, ApplicationUser newData)
         {
             ApplicationUser user = db.Users.Find(id);
@@ -65,22 +67,25 @@ namespace EngineDeStiri.Controllers
                RoleStore<IdentityRole>(context));
                 var UserManager = new UserManager<ApplicationUser>(new
                UserStore<ApplicationUser>(context));
-
+                System.Diagnostics.Debug.WriteLine("OK1");
                 if (TryUpdateModel(user))
                 {
+                    System.Diagnostics.Debug.WriteLine("OK2");
                     user.UserName = newData.UserName;
-                    user.Email = newData.Email;
-                    user.PhoneNumber = newData.PhoneNumber;
                     var roles = from role in db.Roles select role;
                     foreach (var role in roles)
                     {
                         UserManager.RemoveFromRole(id, role.Name);
                     }
-                    var selectedRole =
-                    db.Roles.Find(HttpContext.Request.Params.Get("newRole"));
+                    System.Diagnostics.Debug.WriteLine("OK3");
+                    var selectedRole = db.Roles.Find(HttpContext.Request.Params.Get("newRole"));
+                    System.Diagnostics.Debug.WriteLine(selectedRole.Name);
                     UserManager.AddToRole(id, selectedRole.Name);
+                    System.Diagnostics.Debug.WriteLine("OK4");
                     db.SaveChanges();
+                    System.Diagnostics.Debug.WriteLine("OK5");
                 }
+                Response.Write("Changes saved!");
                 return RedirectToAction("Index");
             }
             catch (Exception e)
@@ -88,9 +93,17 @@ namespace EngineDeStiri.Controllers
                 Response.Write(e.Message);
                 return View(user);
             }
+            
 
         }
 
-
+        [MyAuthorize(Roles = "Administrator")]
+        public ActionResult Delete(string id)
+        {
+            ApplicationUser user = db.Users.Find(id);
+            db.Users.Remove(user);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }

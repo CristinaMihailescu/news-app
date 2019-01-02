@@ -9,7 +9,7 @@ namespace EngineDeStiri.Models
     {
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
-        public string PhoneNumber { get; set; }
+        //public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
     }
@@ -58,6 +58,7 @@ namespace EngineDeStiri.Models
         public string ConfirmPassword { get; set; }
     }
 
+    /*
     public class AddPhoneNumberViewModel
     {
         [Required]
@@ -77,7 +78,7 @@ namespace EngineDeStiri.Models
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
     }
-
+    */
     public class ConfigureTwoFactorViewModel
     {
         public string SelectedProvider { get; set; }

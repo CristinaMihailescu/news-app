@@ -3,26 +3,27 @@
 @{
     ViewBag.Title = "New";
 }
-<h2>Creare article</h2>
+<h2>New</h2>
 
 <form method="post" action="/Article/New">
-    <label>Title</label>
-    <br />
-    <input type="text" name="Title" />
-    <br /><br />
-    <!-- MODIFICA AICI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-    <label>Thumbnail</label>
-    <br />
-    <input type="text" name="Thumbnail" />
-    <br /><br />
-    <label>Headline</label>
-    <br />
-    <input type="text" name="Headline" />
-    <br /><br />
-    <label>Content</label>
-    <br />
-    <!-- content must not be empty -->
-    <input type="text" name="Content" />
-    <br />
-    <button type="submit">Add</button>
+    <div class="form-group">
+        <label>Title</label>
+        <br />
+        <input type="text" name="Title" class="form-control" />
+        <br /><br />
+        <label>Thumbnail URL</label>
+        <br />
+        <input type="text" name="Thumbnail" class="form-control" />
+        <br /><br />
+        <label>Headline</label>
+        <br />
+        <textarea type="text" name="Headline" class="form-control" rows="3"></textarea>
+        <br /><br />
+        <label>Content</label>
+        <br />
+        <!-- content must not be empty -->
+        <textarea type="text" name="Content" class="form-control" rows="10"></textarea>
+        <br />
+        <button type="submit" class="btn btn-dark col-md-2 mr-2">Post</button>
+    </div>
 </form>

@@ -20,9 +20,11 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 680px;
 }
 
-navbar {
-	padding-left: 20%;
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
 }

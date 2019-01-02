@@ -14,6 +14,7 @@ namespace EngineDeStiri.Controllers
     public class ArticleController : Controller
     {
         private ArticleDBContext db = new ArticleDBContext();
+
         public ActionResult Index()
         {
             var articles = from article in db.Articles
@@ -22,11 +23,25 @@ namespace EngineDeStiri.Controllers
             ViewBag.Articles = articles;
             return View();
         }
+
         public ActionResult Show(int id)
         {
             Article article = db.Articles.Find(id);
             ViewBag.Article = article;
             ViewBag.Comments = article.Comments;
+            if (User.IsInRole("Administrator") || User.Identity.GetUserId() == article.Author)
+            {
+                ViewBag.ShowAdditionalButtons = "Yes";
+            }
+            ViewBag.UserId = User.Identity.GetUserId();
+            if(User.IsInRole("Administrator")) {
+                ViewBag.IsAdmin = "Yes";
+            }
+            if (User.IsInRole("User") || User.IsInRole("Editor") || User.IsInRole("Administrator"))
+            {
+                ViewBag.IsLoggedIn = "Yes";
+            }
+            
             return View();
         }
 
@@ -68,7 +83,7 @@ namespace EngineDeStiri.Controllers
             }
         }
 
-        [Authorize(Roles = "Editor, Administrator")]
+        [MyAuthorize(Roles = "Editor, Administrator")]
         public ActionResult Quick()
         {
             ViewBag.CategoryId = db.Categories;
@@ -76,7 +91,7 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Editor, Administrator")]
+        [MyAuthorize(Roles = "Editor, Administrator")]
         public ActionResult Quick(Article article)
         {
             article.Date = DateTime.Now;
@@ -105,7 +120,7 @@ namespace EngineDeStiri.Controllers
             }
         }
 
-        [Authorize(Roles = "Editor, Administrator")]
+        [MyAuthorize(Roles = "Editor, Administrator")]
         public ActionResult Edit(int id)
         {
             Article article = db.Articles.Find(id);
@@ -122,14 +137,15 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Editor, Administrator")]
+        [MyAuthorize(Roles = "Editor, Administrator")]
         public ActionResult Edit(int id, Article requestArticle)
         {
+            Article article = db.Articles.Find(id);
             if (requestArticle.Author == User.Identity.GetUserId() || User.IsInRole("Administrator"))
             {
                 try
                 {
-                    Article article = db.Articles.Find(id);
+                    
                     if (TryUpdateModel(article))
                     {
                         if (requestArticle.Title != null)
@@ -171,9 +187,8 @@ namespace EngineDeStiri.Controllers
             }
 
         }
-
-        [HttpDelete]
-        [Authorize(Roles = "Editor, Administrator")]
+    
+        [MyAuthorize(Roles = "Editor, Administrator")]
         public ActionResult Delete(int id)
         {
             Article article = db.Articles.Find(id);
@@ -190,7 +205,7 @@ namespace EngineDeStiri.Controllers
             
         }
 
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult AddCategory(int id)
         {
             Article article = db.Articles.Find(id);
@@ -208,7 +223,7 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult AddCategory(int id, int CategoryId)
         {
             Article article = db.Articles.Find(id);

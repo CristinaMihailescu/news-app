@@ -2,18 +2,17 @@
 
 <form method="post" action="/Article/AddCategory/@ViewBag.ArticleId">
     @Html.HttpMethodOverride(HttpVerbs.Put)
-    <label>Category:</label>
-    <br />
-
-    <div class="col-md-10">
-        <select name="CategoryId">
-            <asp:CheckBoxList id="CheckBox" runat="server"></asp:CheckBoxList>
+    <p><h3>Select a category</h3></p>
+    <p>
+        <div class="col-md-10">
+            <select name="CategoryId" class="form-control">
+                <asp:CheckBoxList id="CheckBox" runat="server"></asp:CheckBoxList>
                 @foreach (var cat in ViewBag.CategoryId)
                 {
                     <option value="@cat.CategoryId">@cat.Name</option>
                 }
-        </select>
-    </div>
-
-    <button type="submit">Add Category</button>
+            </select>
+        </div>
+    </p>
+    <p><button type="submit" class="btn btn-dark col-md-2 mr-2">Add Category</button></p>
 </form>

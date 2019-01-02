@@ -15,7 +15,7 @@ namespace EngineDeStiri.Controllers
 
         private ArticleDBContext db = new ArticleDBContext();
 
-        [Authorize(Roles = "Administrator")]
+        [MyAuthorize(Roles = "Administrator")]
         public ActionResult Index()
         {
             var comments = from comment in db.Comments
@@ -32,7 +32,7 @@ namespace EngineDeStiri.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult Edit(int id)
         {
             Comment comment = db.Comments.Find(id);
@@ -48,7 +48,7 @@ namespace EngineDeStiri.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult Edit(int id, Comment requestComment)
         {
             Comment comment = db.Comments.Find(id);
@@ -59,7 +59,6 @@ namespace EngineDeStiri.Controllers
                     if (TryUpdateModel(comment))
                     {
                         comment.Title = requestComment.Title;
-                        comment.Date = requestComment.Date;
                         comment.Content = requestComment.Content;
                         db.SaveChanges();
                     }
@@ -77,8 +76,7 @@ namespace EngineDeStiri.Controllers
             
         }
 
-        [HttpDelete]
-        [Authorize(Roles = "Administrator, Editor, User")]
+        [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult Delete(int id)
         {
             Comment comment = db.Comments.Find(id);

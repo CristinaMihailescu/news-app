@@ -6,35 +6,38 @@
 <h2>Edit</h2>
 <form method="post" action="/Article/Edit/@ViewBag.Article.ArticleId">
     @Html.HttpMethodOverride(HttpVerbs.Put)
-    <input type="hidden" name="Author" value="@ViewBag.Article.Author" />
-    <label>Title</label>
-    <br />
-    <input type="text" name="Title" value="@ViewBag.Article.Title" />
-    <br /><br />
-    <label>Date</label>
-    <br />
-    <input type="text" name="Date" value="@ViewBag.Article.Date" />
-    <br /><br />
-    <label>Thumbnail</label>
-    <br />
-    <input type="text" name="Thumbnail" value="@ViewBag.Article.Thumbnail" />
-    <br /><br />
-    <label>Headline</label>
-    <br />
-    <input type="text" name="Content" value="@ViewBag.Article.Headline" />
-    <br /><br />
-    <label>Content</label>
-    <br />
-    @if (ViewBag.Article.URL == null)
-    {
-        <input type="text" name="Content" value="@ViewBag.Article.Content" />
-    }
-    else
-    {
-        <input type="text" name="URL" value="@ViewBag.Article.URL" />
-    }
-    <br />
-    <button type="submit">Modify</button>
+    <div class="form-group">
+        <input type="hidden" name="Author" value="@ViewBag.Article.Author" class="form-control" />
+        <label>Title</label>
+        <br />
+        <input type="text" name="Title" value="@ViewBag.Article.Title" class="form-control" />
+        <br />
+        <label>Date</label>
+        <br />
+        <input type="text" name="Date" value="@ViewBag.Article.Date" class="form-control" />
+        <br />
+        <label>Thumbnail</label>
+        <br />
+        <input type="text" name="Thumbnail" value="@ViewBag.Article.Thumbnail" class="form-control" />
+        <br />
+        <label>Headline</label>
+        <br />
+        <input type="text" name="Content" value="@ViewBag.Article.Headline" class="form-control" />
+        <br />
+        
+        @if (ViewBag.Article.URL == null)
+        {
+            <label>Content</label>
+            <br />
+            <textarea type="text" name="Content" class="form-control">@ViewBag.Article.Content</textarea>
+        }
+        else
+        {
+            <label>Website</label>
+            <br />
+            <input type="text" name="URL" value="@ViewBag.Article.URL" class="form-control" />
+        }
+        <br />
+        <button type="submit" class="btn btn-dark col-md-2 mr-2">Modify</button>
+    </div>
 </form>
-
-@Html.Action("AddCategory", "Article", new { id = ViewBag.Article.ArticleId })
