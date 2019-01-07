@@ -9,22 +9,26 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="text-align: center;">
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">@Html.ActionLink("Simply News", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
-                <li class="nav-item">@Html.ActionLink("World", "Show", "Category", new { id = "1" }, new { @class = "nav-link" })</li>
-                <li class="nav-item">@Html.ActionLink("Business", "Show", "Category", new { id = "2" }, new { @class = "nav-link" })</li>
-                <li class="nav-item">@Html.ActionLink("Technology", "Show", "Category", new { id = "3" }, new { @class = "nav-link" })</li>
-                <li class="nav-item">@Html.ActionLink("Entertainment", "Show", "Category", new { id = "4" }, new { @class = "nav-link" })</li>
-                <li class="nav-item">@Html.ActionLink("Sports", "Show", "Category", new { id = "5" }, new { @class = "nav-link" })</li>
-                <li class="nav-item">@Html.ActionLink("Science", "Show", "Category", new { id = "6" }, new { @class = "nav-link" })</li>
-                <li class="nav-item">@Html.ActionLink("Health", "Show", "Category", new { id = "7" }, new { @class = "nav-link" })</li>
-                <li class="nav-item">@Html.ActionLink("More", "Index", "Category", new { @class = "nav-link" })</li>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="text-align: center; margin: 0 auto; padding: 0;">
+        <div class="collapse navbar-collapse" id="navbarNav" style="text-align: center;">
+            <ul class="navbar-nav menu" style="text-align: center;">
+                <li class="nav-item">@Html.ActionLink("Simply News", "Index", "Home", new { area = "" }, new { @class = "navbar-brand menu-text" })</li>
+                <li class="nav-item">@Html.ActionLink("World", "Show", "Category", new { id = "1" }, new { @class = "nav-link menu-text" })</li>
+                <li class="nav-item">@Html.ActionLink("Business", "Show", "Category", new { id = "2" }, new { @class = "nav-link menu-text" })</li>
+                <li class="nav-item">@Html.ActionLink("Technology", "Show", "Category", new { id = "3" }, new { @class = "nav-link menu-text" })</li>
+                <li class="nav-item">@Html.ActionLink("Entertainment", "Show", "Category", new { id = "4" }, new { @class = "nav-link menu-text" })</li>
+                <li class="nav-item">@Html.ActionLink("Sports", "Show", "Category", new { id = "5" }, new { @class = "nav-link menu-text" })</li>
+                <li class="nav-item">@Html.ActionLink("Science", "Show", "Category", new { id = "6" }, new { @class = "nav-link menu-text" })</li>
+                <li class="nav-item">@Html.ActionLink("Health", "Show", "Category", new { id = "7" }, new { @class = "nav-link menu-text" })</li>
+                <li class="nav-item">@Html.ActionLink("More", "Index", "Category", null, new { @class = "nav-link menu-text" })</li>
+                <li class="nav-item">@Html.Partial("_LoginPartial")</li>
             </ul>
-            @Html.Partial("_LoginPartial")
+
         </div>
     </nav>
+
+
 
     <div class="container body-content">
         @RenderBody()

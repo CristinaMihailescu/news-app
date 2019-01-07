@@ -1,61 +1,59 @@
 ﻿@{
     ViewBag.Title = "Show category";
+    int counter = 0;
 }
-<h1>@ViewBag.Category.Name</h1>
-<br />
-<!-- SHOW NEWS FROM THIS CATEGORY !!!!!!!!!!!!!!!!!!! -->
-<a href="/Category/Edit/@ViewBag.Category.CategoryId">Edit</a>
-
-<!--
-<form method="post" action="/Category/Show/ A ROUND ViewBag.Category.CategoryId">
-     A ROUND Html.HttpMethodOverride(HttpVerbs.Put)
-    <div class="col-md-10">
-        <select name="SortingOption">
-            <option value="1">Date</option>
-            <option value="2">Name</option>
-        </select>
-    </div>
-    <br />
-    <button type="submit">Sort</button>
-</form>
-    -->
-
-
-@Html.ActionLink("Sort by Date", "Show", new { SortingOption = "Date" })
-<br />
-@Html.ActionLink("Sort by Name", "Show", new { SortingOption = "Name" })
-
-<br />
+<h1><b>@ViewBag.Category.Name</b></h1>
 <br />
 
-@using (Html.BeginForm())
-{
+<div style="text-align: left;">
+    @if (ViewBag.ShowAdditionalButtons == "Yes")
+    {
+        <a role="button" href="/Category/Edit/@ViewBag.Category.CategoryId" class="btn btn-dark btn-sm col-md-2 mr-2">Edit</a>
+        <a role="button" href="/Category/Delete/@ViewBag.Category.CategoryId" class="btn btn-dark btn-sm col-md-2 mr-2">Delete</a>
+    }
+    @Html.ActionLink("Sort by Date", "Show", new { SortingOption = "Date" }, new { @class = "btn btn-dark btn-sm col-md-2 mr-2" })
+    @Html.ActionLink("Sort by Name", "Show", new { SortingOption = "Name" }, new { @class = "btn btn-dark btn-sm col-md-2 mr-2" })
     <p>
-        Search: @Html.TextBox("SearchData")
-        <input type="submit" value="Find" />
+        @using (Html.BeginForm())
+        {
+        <p>
+            @Html.TextBox("SearchData", null, new { @class = "form-control", @style = "padding-top: 0px; width: 250px; display: inline;" })
+            <input type="submit" value="Find" class="btn btn-dark" style="width: 60px;" />
+        </p>
+        }
     </p>
-}
-<br />
-<br />
+    
 
-@foreach (var article in Model)
+</div>
+
+@if (Model == null)
 {
-    <p>@article.Title</p>
-    <p>@article.Date</p>
-    //<p>@article.author.Username</p> !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    <p>@article.Thumbnail</p>
-    <a href="/Article/Show/@article.ArticleId">View More</a>
-    <br />
-    <hr />
-    <br />
-}
 
-<form method="post" action="/Category/Delete/@ViewBag.Category.CategoryId">
-    @Html.HttpMethodOverride(HttpVerbs.Delete)
-    <button type="submit">Delete</button>
-</form>
-<hr />
-<a href="/Category/Index">All Categories</a>
-<br />
-<a href="/Category/New">New</a>
-<br />
+}
+else
+{
+    counter = 0;
+    <div class="card-deck mb-3 text-center row">
+        @foreach (var article in Model)
+        {
+
+            if (counter != 0 && counter % 4 == 0)
+            {
+                @:</div>
+                    @:<div class="card-deck mb-3 text-center row">
+        }
+            counter++;
+
+            <a href="/Article/Show/@article.ArticleId" class="col-md-3 d-flex flex-column each">
+                <div class="card text-white bg-dark box-shadow d-flex flex-column">
+                    <img class="my-auto card-img-top" style="border-bottom: solid; border-color: white; height: 170px; object-fit: cover" src="@article.Thumbnail" alt="Card image cap">
+                    <div class="card-body d-flex flex-column" style="height: auto; padding: 5px;">
+                        <div class="card-title" style=" position: relative; top: 50%; transform: translateY(-50%);">
+                            <h5 style="font-size: 14px; font-weight: bold;">@article.Title</h5>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+}

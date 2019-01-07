@@ -25,6 +25,24 @@ namespace EngineDeStiri.Controllers
             ArticleSuggestion articleSuggestion = db.ArticleSuggestions.Find(id);
             ViewBag.ArticleSuggestion = articleSuggestion;
             ViewBag.Comments = articleSuggestion.Comments;
+            if (User.IsInRole("Administrator") || User.Identity.GetUserId() == articleSuggestion.UserId)
+            {
+                ViewBag.ShowAdditionalButtons = "Yes";
+            }
+            if (User.IsInRole("Administrator") || User.IsInRole("Editor"))
+            {
+                ViewBag.AR = "Yes";
+            }
+            ViewBag.UserId = User.Identity.GetUserId();
+            if (User.IsInRole("Administrator"))
+            {
+                ViewBag.IsAdmin = "Yes";
+            }
+            if (User.IsInRole("User") || User.IsInRole("Editor") || User.IsInRole("Administrator"))
+            {
+                ViewBag.IsLoggedIn = "Yes";
+            }
+
             return View();
         }
 
@@ -41,6 +59,7 @@ namespace EngineDeStiri.Controllers
         {
             articleSuggestion.Date = DateTime.Now;
             articleSuggestion.UserId = User.Identity.GetUserId();
+            articleSuggestion.Accepted = -1;
             try
             {
                 db.ArticleSuggestions.Add(articleSuggestion);
@@ -91,7 +110,6 @@ namespace EngineDeStiri.Controllers
                     if (TryUpdateModel(articleSuggestion))
                     {
                         articleSuggestion.Title = requestArticleSuggestion.Title;
-                        articleSuggestion.Date = requestArticleSuggestion.Date;
                         articleSuggestion.Content = requestArticleSuggestion.Content;
                         db.SaveChanges();
                     }
@@ -109,7 +127,6 @@ namespace EngineDeStiri.Controllers
             
         }
 
-        [HttpDelete]
         [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult Delete(int id)
         {
@@ -216,7 +233,6 @@ namespace EngineDeStiri.Controllers
             
         }
 
-        [HttpPut]
         [MyAuthorize(Roles = "Administrator, Editor")]
         public ActionResult Accept(int id)
         {
@@ -238,7 +254,6 @@ namespace EngineDeStiri.Controllers
 
         }
 
-        [HttpPut]
         [MyAuthorize(Roles = "Administrator, Editor")]
         public ActionResult Reject(int id)
         {

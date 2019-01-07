@@ -4,13 +4,10 @@
     ViewBag.Title = "Edit";
 }
 <h2>Edit</h2>
-<form method="post" action="/Category/Edit/@ViewBag.Category.CategoryId">
+<form class="form-group" method="post" action="/Category/Edit/@ViewBag.Category.CategoryId">
     @Html.HttpMethodOverride(HttpVerbs.Put)
     <label>Name</label>
+    <input type="text" class="form-control" name="Name" value="@ViewBag.Category.Name" />
     <br />
-    <input type="text" name="Name" value="@ViewBag.Category.Name" />
-    <br /><br />
-    <!-- ADD AND REMOVE NEWS FROM THIS CATEGORY !!!!!!!!!!!!!!! -->
-    <br />
-    <button type="submit">Modify</button>
+    <button type="submit" class="btn btn-dark col-md-2 mr-2">Modify</button>
 </form>

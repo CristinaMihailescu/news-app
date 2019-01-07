@@ -1,8 +1,5 @@
 ﻿@model EngineDeStiri.Models.ApplicationUser
 
-@{
-    ViewBag.Title = "Edit";
-}
 <h2>Edit comment</h2>
 <form method="post" action="/Comment/Edit/@ViewBag.Comment.CommentId">
     @Html.HttpMethodOverride(HttpVerbs.Put)

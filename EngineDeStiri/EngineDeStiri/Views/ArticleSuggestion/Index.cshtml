@@ -2,18 +2,32 @@
 
 @{
     ViewBag.Title = "All article suggestions";
+    int counter = 0;
 }
-<h2>@ViewBag.Title</h2>
-<a href="/ArticleSuggestion/New">New Article Suggestion</a>
+
+<h2><b>Suggestions</b></h2>
+
 <br />
-@foreach (var articleSuggestion in ViewBag.ArticleSuggestions)
-{
-    <p>@articleSuggestion.Title</p>
-    <p>@articleSuggestion.Date</p>
-    //<p>@article.author.Username</p> !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    <a href="/ArticleSuggestion/Show/@articleSuggestion.ArticleSuggestionId">View More</a>
-    <br />
-    <hr />
-    <br />
-}
-<br />
+
+<div class="card-deck mb-3 text-center row">
+    @foreach (var articleSuggestion in ViewBag.ArticleSuggestions)
+    {
+
+        if (counter != 0 && counter % 4 == 0)
+        {
+            @:</div>
+            @:<div class="card-deck mb-3 text-center row">
+        }
+        counter++;
+
+        <a href="/ArticleSuggestion/Show/@articleSuggestion.ArticleSuggestionId" class="col-md-3 d-flex flex-column each">
+            <div class="card text-white bg-dark box-shadow d-flex flex-column">
+                <div class="card-body d-flex flex-column" style="height: auto; padding: 5px;">
+                    <div class="card-title" style=" position: relative; top: 50%; transform: translateY(-50%);">
+                        <h5 style="font-size: 14px; font-weight: bold;">@articleSuggestion.Title</h5>
+                    </div>
+                </div>
+            </div>
+        </a>
+    }
+</div>

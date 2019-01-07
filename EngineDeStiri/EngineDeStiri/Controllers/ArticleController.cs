@@ -21,6 +21,14 @@ namespace EngineDeStiri.Controllers
                            orderby article.Title
                            select article;
             ViewBag.Articles = articles;
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Administrator") || User.IsInRole("Editor"))
+                {
+                    ViewBag.ShowAdditionalButtons = "Yes";
+                }
+            }
+
             return View();
         }
 
@@ -28,20 +36,35 @@ namespace EngineDeStiri.Controllers
         {
             Article article = db.Articles.Find(id);
             ViewBag.Article = article;
-            ViewBag.Comments = article.Comments;
-            if (User.IsInRole("Administrator") || User.Identity.GetUserId() == article.Author)
+            try
             {
-                ViewBag.ShowAdditionalButtons = "Yes";
+                ViewBag.Comments = article.Comments;
             }
-            ViewBag.UserId = User.Identity.GetUserId();
-            if(User.IsInRole("Administrator")) {
-                ViewBag.IsAdmin = "Yes";
-            }
-            if (User.IsInRole("User") || User.IsInRole("Editor") || User.IsInRole("Administrator"))
+            catch (Exception e)
             {
-                ViewBag.IsLoggedIn = "Yes";
+                ViewBag.Comments = null;
             }
-            
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Administrator") || User.Identity.GetUserId() == article.Author)
+                {
+                    ViewBag.ShowAdditionalButtons = "Yes";
+                }
+            }
+
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserId = User.Identity.GetUserId();
+                if (User.IsInRole("Administrator"))
+                {
+                    ViewBag.IsAdmin = "Yes";
+                }
+                if (User.IsInRole("User") || User.IsInRole("Editor") || User.IsInRole("Administrator"))
+                {
+                    ViewBag.IsLoggedIn = "Yes";
+                }
+            }
+
             return View();
         }
 
@@ -57,6 +80,12 @@ namespace EngineDeStiri.Controllers
         [MyAuthorize(Roles = "Editor, Administrator")]
         public ActionResult New(Article article)
         {
+            if (article.Title == null || article.Headline == null || article.Thumbnail == null || article.Content == null)
+            {
+                ModelState.AddModelError("Empty", "All fields must be filled.");
+                return View();
+            }
+            
             article.Date = DateTime.Now;
             article.Author = User.Identity.GetUserId();
             article.Username = User.Identity.GetUserName();
@@ -124,11 +153,13 @@ namespace EngineDeStiri.Controllers
         public ActionResult Edit(int id)
         {
             Article article = db.Articles.Find(id);
+
             if (article.Author == User.Identity.GetUserId() || User.IsInRole("Administrator"))
             {
                 ViewBag.Article = article;
                 return View();
             }
+
             else
             {
                 return View("Unauthorized");
@@ -140,21 +171,22 @@ namespace EngineDeStiri.Controllers
         [MyAuthorize(Roles = "Editor, Administrator")]
         public ActionResult Edit(int id, Article requestArticle)
         {
+            if (requestArticle.Title == null || requestArticle.Headline == null || requestArticle.Thumbnail == null || requestArticle.Content == null)
+            {
+                ModelState.AddModelError("Empty", "All fields must be filled.");
+                return RedirectToAction("Edit", new { id = id });
+            }
             Article article = db.Articles.Find(id);
             if (requestArticle.Author == User.Identity.GetUserId() || User.IsInRole("Administrator"))
             {
                 try
                 {
-                    
+
                     if (TryUpdateModel(article))
                     {
                         if (requestArticle.Title != null)
                         {
                             article.Title = requestArticle.Title;
-                        }
-                        if (requestArticle.Date != null)
-                        {
-                            article.Date = requestArticle.Date;
                         }
                         if (requestArticle.Thumbnail != null)
                         {
@@ -187,7 +219,7 @@ namespace EngineDeStiri.Controllers
             }
 
         }
-    
+
         [MyAuthorize(Roles = "Editor, Administrator")]
         public ActionResult Delete(int id)
         {
@@ -202,13 +234,14 @@ namespace EngineDeStiri.Controllers
             {
                 return View("Unauthorized");
             }
-            
+
         }
 
         [MyAuthorize(Roles = "Administrator, Editor, User")]
         public ActionResult AddCategory(int id)
         {
             Article article = db.Articles.Find(id);
+
             if (article.Author == User.Identity.GetUserId() || User.IsInRole("Administrator"))
             {
                 ViewBag.ArticleId = id;
@@ -265,7 +298,7 @@ namespace EngineDeStiri.Controllers
             {
                 return RedirectToAction("Login", "AccountController");
             }
-            
+
         }
 
         [HttpPost]
@@ -294,7 +327,7 @@ namespace EngineDeStiri.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            
+
         }
     }
 }

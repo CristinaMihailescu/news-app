@@ -4,20 +4,11 @@
     ViewBag.Title = "Show article";
 }
 <h1>@ViewBag.Comment.Title</h1>
-<p>@ViewBag.Comment.Date</p>
-<p>@ViewBag.Comment.AuthorName</p>
-<br />
+<p>Posted by <kbd>@ViewBag.Comment.AuthorName</kbd> on @ViewBag.Comment.Date</p>
 <p>@ViewBag.Comment.Content</p>
 <br />
 
-<a href="/Comment/Edit/@ViewBag.Comment.CommentId">Edit</a>
-
-<form method="post" action="/Comment/Delete/@ViewBag.Comment.CommentId">
-    @Html.HttpMethodOverride(HttpVerbs.Delete)
-    <button type="submit">Delete</button>
-</form>
-<hr />
-<!--
-    <a href="/Comment/New">New</a>
-    <br />
--->
+<div class="row mb-4">
+    <a role="button" class="btn btn-dark col-md-2 mr-2" href="/Comment/Edit/@ViewBag.Comment.CommentId">Edit</a>
+    <a role="button" class="btn btn-dark col-md-2 mr-2" href="/Comment/Delete/@ViewBag.Comment.CommentId">Delete</a>
+</div>

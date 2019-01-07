@@ -18,12 +18,19 @@ namespace EngineDeStiri.Controllers
                            orderby category.Name
                            select category;
             ViewBag.Categories = categories;
+            if (User.IsInRole("Administrator"))
+            {
+                ViewBag.ShowAdditionalButtons = "Yes";
+            }
             return View();
         }
 
         public ActionResult Show(int id, string SortingOption, string SearchData)
         {
-
+            if (User.IsInRole("Administrator"))
+            {
+                ViewBag.ShowAdditionalButtons = "Yes";
+            }
             if (String.IsNullOrEmpty(SortingOption))
             {
                 SortingOption = "Name";
@@ -36,23 +43,34 @@ namespace EngineDeStiri.Controllers
 
             if (!String.IsNullOrEmpty(SearchData)) //IF SearchingData IS NOT empty
             {
-                cat = cat.Where(art => art.Title.ToUpper().Contains(SearchData.ToUpper())
+                try
+                {
+                    cat = cat.Where(art => art.Title.ToUpper().Contains(SearchData.ToUpper())
                     || art.Author.ToUpper().Contains(SearchData.ToUpper())
                     || art.Content.ToUpper().Contains(SearchData.ToUpper())).ToList();
+
+                    switch (SortingOption)
+                    {
+                        case "Date":
+                            return View(cat.OrderByDescending(art => art.Date).ToList());
+                            break;
+                        case "Name":
+                            return View(cat.OrderBy(art => art.Title).ToList());
+                            break;
+                        default:
+                            return View(cat.ToList());
+                            break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    //nothing was found
+                    cat = new List<Article>();
+                    return View(cat);
+                }
             }
 
-            switch (SortingOption)
-            {
-                case "Date":
-                    return View(cat.OrderByDescending(art => art.Date).ToList());
-                    break;
-                case "Name":
-                    return View(cat.OrderBy(art => art.Title).ToList());
-                    break;
-                default:
-                    return View(cat.ToList());
-                    break;
-            }
+            return View(cat.ToList());
         }
 
         [MyAuthorize(Roles = "Administrator")]
@@ -119,7 +137,6 @@ namespace EngineDeStiri.Controllers
             }
         }
 
-        [HttpDelete]
         [MyAuthorize(Roles = "Administrator")]
         public ActionResult Delete(int id)
         {

@@ -1,27 +1,28 @@
 ﻿@{
     ViewBag.Title = "Home Page";
     int counter = 0;
-}
+}  
 
     <div class="card-deck mb-3 text-center row">
     @foreach (var article in Model)
     {
-        if (counter != 0 && counter % 3 == 0)
+        
+        if (counter != 0 && counter % 4 == 0)
         {
             @:</div>
             @:<div class="card-deck mb-3 text-center row">
         }
         counter++;
-        <div class="col-md-4 d-flex flex-column">
-            <div class="card text-white bg-dark box-shadow mb-4 d-flex flex-column">
-                <img class="my-auto card-img-top" style="border-bottom: solid; border-color: white; height: 200px; object-fit: cover" src="@article.Thumbnail" alt="Card image cap">
-                <div class="card-body d-flex flex-column">
-                    <div class="card-title">
-                        <h5 class="font-weight-normal">@article.Title</h5>
+        
+        <a href="/Article/Show/@article.ArticleId" class="col-md-3 d-flex flex-column each">
+            <div class="card text-white bg-dark box-shadow d-flex flex-column">
+                <img class="my-auto card-img-top" style="border-bottom: solid; border-color: white; height: 170px; object-fit: cover" src="@article.Thumbnail" alt="Card image cap">
+                <div class="card-body d-flex flex-column" style="height: auto; padding: 5px;">
+                    <div class="card-title" style=" position: relative; top: 50%; transform: translateY(-50%);">
+                        <h5 style="font-size: 14px; font-weight: bold;">@article.Title</h5>
                     </div>
-                    <a role="button" href="/Article/Show/@article.ArticleId" class="mt-auto btn btn-block btn-outline-light">Read</a>
                 </div>
             </div>
-        </div>
+        </a>
     }
     </div>

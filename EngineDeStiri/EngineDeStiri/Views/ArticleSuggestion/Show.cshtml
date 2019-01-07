@@ -4,93 +4,105 @@
     ViewBag.Title = "Suggestion";
 }
 
-<h1>@ViewBag.ArticleSuggestion.Title</h1>
-<p>@ViewBag.ArticleSuggestion.Date</p>
-<br />
+<p>
+    <h1><b>@ViewBag.ArticleSuggestion.Title</b></h1>
+</p>
+<p>Posted on @ViewBag.ArticleSuggestion.Date</p>
 @if (ViewBag.ArticleSuggestion.Accepted == -1)
 {
-    <div>This suggestion has not been reviewed yet.</div>
+    <div><b>This suggestion has not been reviewed yet.</b></div>
 }
 else
 {
     if (ViewBag.ArticleSuggestion.Accepted == 1)
     {
-        <div>This suggestion was accepted.</div>
+        <div><b>This suggestion was accepted.</b></div>
     }
     else
     {
-        <div>This suggestion was rejected.</div>
-    }
-}
-<br />
-<div>Categories: </div>
-
-@if (ViewBag.ArticleSuggestion.Categories.Count == 0)
-{
-    <div>None</div>
-}
-else
-{
-    foreach (var cat in ViewBag.ArticleSuggestion.Categories)
-    {
-        <div>@cat.Name</div>
+        <div><b>This suggestion was rejected.</b></div>
     }
 }
 
-
-<!-- A ROUND ViewBag.ArticleSuggestion.Author.Username</p> --><p>
-<p>@ViewBag.ArticleSuggestion.Content</p>
-<br />
-
-<a href="/ArticleSuggestion/Edit/@ViewBag.ArticleSuggestion.ArticleSuggestionId">Edit</a>
-
-<form method="post" action="/ArticleSuggestion/Delete/@ViewBag.ArticleSuggestion.ArticleSuggestionId">
-    @Html.HttpMethodOverride(HttpVerbs.Delete)
-    <button type="submit">Delete</button>
-</form>
-<hr />
-<a href="/ArticleSuggestion/Index">All Suggestions</a>
-<br />
-<a href="/ArticleSuggestion/New">New</a>
-<br />
-
-<!-- hide this if editor exists -->
-<form method="post" action="/ArticleSuggestion/Accept/@ViewBag.ArticleSuggestion.ArticleSuggestionId">
-    @Html.HttpMethodOverride(HttpVerbs.Put)
-    <button type="submit">Accept</button>
-</form>
-<form method="post" action="/ArticleSuggestion/Reject/@ViewBag.ArticleSuggestion.ArticleSuggestionId">
-    @Html.HttpMethodOverride(HttpVerbs.Put)
-    <button type="submit">Reject</button>
-</form>
-
-<h2>COMMENTS</h2>
-
-@foreach (var com in ViewBag.Comments)
-{
+<div class="clearfix">
     <p>
-    <p>@com.Title by @com.AuthorName at @com.Date said:</p>
-    <a href="/Comment/Edit/@com.CommentId">Edit</a>
+        Categories:
 
-    <form method="post" action="/Comment/Delete/@com.CommentId">
-        @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button type="submit">Delete</button>
-    </form>
-
-    <p>@com.Content</p>
+        @if (ViewBag.ArticleSuggestion.Categories.Count == 0)
+        {
+            <kbd>None</kbd>
+        }
+        else
+        {
+            foreach (var cat in ViewBag.ArticleSuggestion.Categories)
+            {
+                <kbd>@cat.Name</kbd>
+            }
+        }
+        @if (ViewBag.ShowAdditionalButtons == "Yes")
+        {
+            <kbd><a role="button" style="text-decoration: none; color: white;" href="/ArticleSuggestion/AddCategory/@ViewBag.ArticleSuggestion.ArticleSuggestionId">+</a></kbd>
+        }
     </p>
-}
+        
+        <p style="text-indent: 5%;">@ViewBag.ArticleSuggestion.Content</p>
+        
+    </div>
 
-<h2>Add new comment</h2>
-
-<form method="post" action="/ArticleSuggestion/AddComment/@ViewBag.ArticleSuggestion.ArticleSuggestionId">
-    <label>Title</label>
-    <br />
-    <input type="text" name="Title" />
-    <br /><br />
-    <label>Content</label>
-    <br />
-    <input type="text" name="Content" />
-    <br />
-    <button type="submit">Add</button>
+    @if (ViewBag.ShowAdditionalButtons == "Yes")
+    {
+        <div class="row mb-4">
+            <a role="button" class="btn btn-dark col-md-2 mr-2" href="/ArticleSuggestion/Edit/@ViewBag.ArticleSuggestion.ArticleSuggestionId">Edit</a>
+            <a role="button" class="btn btn-dark col-md-2 mr-2" href="/ArticleSuggestion/Delete/@ViewBag.ArticleSuggestion.ArticleSuggestionId">Delete</a>
+        </div>
+    }
+    
+    @if (ViewBag.ArticleSuggestion.Accepted == -1 && ViewBag.AR == "Yes")
+    {
+        <div class="row mb-4">
+            <a role="button" class="btn btn-dark col-md-2 mr-2" href="/ArticleSuggestion/Accept/@ViewBag.ArticleSuggestion.ArticleSuggestionId">Accept</a>
+            <a role="button" class="btn btn-dark col-md-2 mr-2" href="/ArticleSuggestion/Reject/@ViewBag.ArticleSuggestion.ArticleSuggestionId">Reject</a>
+        </div>
+    }
 </form>
+    <p>
+        <h2>COMMENTS</h2>
+
+        @foreach (var com in ViewBag.Comments)
+        {
+            <div style="box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px; padding: 2%;">
+                <h5><b>@com.Title</b></h5>
+        <p class="small"> by <kbd>@com.AuthorName</kbd> on @com.Date</p>
+        <p>@com.Content</p>
+        @if (com.AuthorId == ViewBag.UserId || ViewBag.IsAdmin == "Yes")
+        {
+            <div class="row mb-4">
+                <a role="button" class="btn btn-dark col-md-2 mr-2" href="/Comment/Edit/@com.CommentId">Edit</a>
+                <a role="button" class="btn btn-dark col-md-2 mr-2" href="/Comment/Delete/@com.CommentId">Delete</a>
+            </div>
+        }
+    </div>
+        }
+
+        @if (ViewBag.IsLoggedIn == "Yes")
+        {
+            <p><h2>Add a new comment</h2></p>
+            <form method="post" action="/ArticleSuggestion/AddComment/@ViewBag.ArticleSuggestion.ArticleSuggestionId">
+                <div class="form-group" style="box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px; padding: 2%;">
+                    <label>Title</label>
+                    <br />
+                    <input type="text" name="Title" class="form-control" />
+                    <br /><br />
+                    <label>Content</label>
+                    <br />
+                    <textarea type="text" name="Content" class="form-control" rows="2"></textarea>
+                    <br />
+                    <button type="submit" class="btn btn-dark col-md-2 mr-2">Add</button>
+                </div>
+            </form>
+        }
+        else
+        {
+            <p><h2>Login to add a comment!</h2></p>
+        }
+        </p>

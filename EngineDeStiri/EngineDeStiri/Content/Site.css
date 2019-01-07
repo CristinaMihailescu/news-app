@@ -1,10 +1,13 @@
 ﻿body {
-    padding-top: 10px;
-    padding-bottom: 20px;
+    margin: 0;
+    padding: 0;
+    
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
+    padding-top: 10px;
+    padding-bottom: 20px;
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -27,4 +30,54 @@ textarea {
   content: "";
   clear: both;
   display: table;
+}
+
+.menu {
+   width: 100%;
+   height: 50px;
+   line-height: 50px;
+   display: table;
+   text-align: center;
+   background-color: #212529;
+}
+
+.menu li {
+    display: inline-block;
+    float: none;
+
+}
+
+.menu-text {
+    color: white !important;
+    font-family: Verdana !important;
+    font-weight: bold !important;
+}
+
+.nav-item > ul > li {
+    .nav-item
+}
+
+.menu li:not(:first-child) a:hover {
+  background-color: #0d0e10;
+}
+
+.menu li:first-child > a {
+  color: #9c4cff !important;
+}
+
+.each {
+    padding: 0;
+    text-decoration: none !important;
+}
+
+.each:hover > div > .card-body{
+    background-color: #0d0e10;
+}
+
+.each:hover > div > img {
+    filter: brightness(80%);
+}
+
+.login {
+
 }

@@ -6,20 +6,16 @@
 <h2>Edit</h2>
 <form method="post" action="/ArticleSuggestion/Edit/@ViewBag.ArticleSuggestion.ArticleSuggestionId">
     @Html.HttpMethodOverride(HttpVerbs.Put)
-    <input type="hideen" name="Title" value="@ViewBag.ArticleSuggestion.UserId" />
-    <label>Title</label>
-    <br />
-    <input type="text" name="Title" value="@ViewBag.ArticleSuggestion.Title" />
-    <br /><br />
-    <label>Date</label>
-    <br />
-    <input type="text" name="Date" value="@ViewBag.ArticleSuggestion.Date" />
-    <br /><br />
-    <label>Content</label>
-    <br />
-    <input type="text" name="Content" value="@ViewBag.ArticleSuggestion.Content" />
-    <br />
-    <button type="submit">Modify</button>
+    <div class="form-group">
+        <input type="hidden" name="UserId" value="@ViewBag.ArticleSuggestion.UserId" />
+        <label>Title</label>
+        <br />
+        <input type="text" name="Title" value="@ViewBag.ArticleSuggestion.Title" class="form-control" />
+        <br />
+        <label>Content</label>
+        <br />
+        <textarea type="text" name="Content" class="form-control">@ViewBag.ArticleSuggestion.Content</textarea>
+        <br />
+        <button type="submit" class="btn btn-dark col-md-2 mr-2">Modify</button>
+    </div>
 </form>
-
-@Html.Action("AddCategory", "ArticleSuggestion", new { id = ViewBag.ArticleSuggestion.ArticleSuggestionId })

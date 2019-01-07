@@ -4,6 +4,7 @@
     ViewBag.Title = "Edit";
 }
 <h2>Edit</h2>
+@Html.ValidationMessage("Empty")
 <form method="post" action="/Article/Edit/@ViewBag.Article.ArticleId">
     @Html.HttpMethodOverride(HttpVerbs.Put)
     <div class="form-group">
@@ -12,17 +13,13 @@
         <br />
         <input type="text" name="Title" value="@ViewBag.Article.Title" class="form-control" />
         <br />
-        <label>Date</label>
-        <br />
-        <input type="text" name="Date" value="@ViewBag.Article.Date" class="form-control" />
-        <br />
         <label>Thumbnail</label>
         <br />
         <input type="text" name="Thumbnail" value="@ViewBag.Article.Thumbnail" class="form-control" />
         <br />
         <label>Headline</label>
         <br />
-        <input type="text" name="Content" value="@ViewBag.Article.Headline" class="form-control" />
+        <input type="text" name="Headline" value="@ViewBag.Article.Headline" class="form-control" />
         <br />
         
         @if (ViewBag.Article.URL == null)

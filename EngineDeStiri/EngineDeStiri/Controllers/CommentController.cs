@@ -36,9 +36,9 @@ namespace EngineDeStiri.Controllers
         public ActionResult Edit(int id)
         {
             Comment comment = db.Comments.Find(id);
+            ViewBag.Comment = comment;
             if (User.Identity.GetUserId() == comment.AuthorId || User.IsInRole("Administrator"))
             {
-                ViewBag.Comment = comment;
                 return View();
             }
             else
@@ -62,7 +62,15 @@ namespace EngineDeStiri.Controllers
                         comment.Content = requestComment.Content;
                         db.SaveChanges();
                     }
-                    return RedirectToAction("Show", "Article", new { id = comment.Article.ArticleId });
+                    if (comment.Article == null)
+                    {
+                        return RedirectToAction("Show", "ArticleSuggestion", new { id = comment.ArticleSuggestion.ArticleSuggestionId });
+                    }
+                    else
+                    {
+                        return RedirectToAction("Show", "Article", new { id = comment.Article.ArticleId });
+                    }
+                    
                 }
                 catch (Exception e)
                 {

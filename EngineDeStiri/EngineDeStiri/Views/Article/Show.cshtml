@@ -55,11 +55,12 @@
 
 <p>
     <h2>COMMENTS</h2>
-
-    @foreach (var com in ViewBag.Comments)
+    @if (ViewBag.Comments != null)
     {
-    <div style="box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px; padding: 2%;">
-        <h5><b>@com.Title</b></h5>
+        foreach (var com in ViewBag.Comments)
+        {
+            <div style="box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px; padding: 2%;">
+                <h5><b>@com.Title</b></h5>
         <p class="small"> by <kbd>@com.AuthorName</kbd> on @com.Date</p>
         <p>@com.Content</p>
         @if (com.AuthorId == ViewBag.UserId || ViewBag.IsAdmin == "Yes")
@@ -69,10 +70,12 @@
                 <a role="button" class="btn btn-dark col-md-2 mr-2" href="/Comment/Delete/@com.CommentId">Delete</a>
             </div>
         }
-    </div>
+        </div>
+        }
     }
+    
 
-    @if (ViewBag.IsLoggedIn == "Yes")
+    @if (User.Identity.IsAuthenticated)
     {
         <p><h2>Add a new comment</h2></p>
         <form method="post" action="/Article/AddComment/@ViewBag.Article.ArticleId">

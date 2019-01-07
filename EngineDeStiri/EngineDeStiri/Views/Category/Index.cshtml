@@ -3,9 +3,12 @@
 @{
     ViewBag.Title = "Categories";
     int counter = 0;
-}
+}   
 <p><h2>@ViewBag.Title</h2></p>
-<p><a role="button" href="/Category/New" class="btn btn-dark col-md-2 mr-2">New</a></p>
+@if (ViewBag.ShowAdditionalButtons == "Yes")
+{
+    <p><a role="button" href="/Category/New" class="btn btn-dark col-md-2 mr-2">New</a></p>
+}
 
 <div class="card-deck mb-3 text-center row">
     @foreach (var category in ViewBag.Categories)

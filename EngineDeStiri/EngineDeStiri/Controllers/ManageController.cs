@@ -80,7 +80,7 @@ namespace EngineDeStiri.Controllers
             {
                 if (User.IsInRole("Editor"))
                 {
-                    ViewBag.Role = "Administrator";
+                    ViewBag.Role = "Editor";
                 }
                 else
                 {
